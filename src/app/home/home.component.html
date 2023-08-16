@@ -1,0 +1,39 @@
+<div class="parent">
+    <div class="body" *ngIf="!submitted">
+        <div class="heading">
+            View Data of emotion reaction
+        </div>
+        <div class="form">
+            <form [formGroup]="cnt_form">
+                <div class="formGroup">
+                    <label for="cnt_id">Enter Cnt_id : </label>
+                    <input type="number" formControlName="cnt_id">
+                </div>
+                <div class="submitButton">
+                    <button type="button" [disabled]="cnt_form.invalid" (click)="submit()">Submit</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="video-caintainer" fxLayout="row" fxFlex="90" fxLayoutAlign="center center" *ngIf="submitted && data">
+        <!-- <div class="top">
+            <img src="assets/images/monetIcon.png">
+        </div> -->
+        <div class="content" #content>
+            <div class="videoPlay">
+                <video #videoPlay crossOrigin="anonymous" [src]="videoUrl" (play)="Start($event)" (ended)="Ended($event)" (pause)="Pause($event)" (timeupdate)="ontimeUpdate($event)" (waiting)="waiting()" (playing)="playing()">
+                </video>
+               <mat-progress-bar [value]="Duration" mode="determinate"></mat-progress-bar>
+               <mat-icon class="icon" (click)="play()" *ngIf="!Play">play_arrow</mat-icon>
+               <mat-icon class="icon" (click)="stop()" *ngIf="!Stop">pause</mat-icon>
+
+                <app-graph class="chart-component" *ngIf="emotionData" [emotionData]="emotionData" [videoDuration]="videoDuration" [emotionDataAll]="emotionDataAll" [currentTime]="videoCurrentTime"></app-graph>
+                 <!-- <mat-progress-bar [value]="Duration" mode="determinate"></mat-progress-bar> -->
+            <!-- <mat-icon class="icon" (click)="play()" *ngIf="!Play">play_arrow</mat-icon> -->
+            </div>
+        </div>
+     </div>
+    <div class="spinner" *ngIf="submitted && !data">
+        <mat-spinner></mat-spinner>
+    </div>
+</div>
