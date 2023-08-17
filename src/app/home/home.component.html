@@ -7,7 +7,7 @@
             <form [formGroup]="cnt_form">
                 <div class="formGroup">
                     <label for="cnt_id">Enter Cnt_id : </label>
-                    <input type="number" formControlName="cnt_id">
+                    <input type="number" formControlName="cnt_id" (keydown.enter)="submit()">
                 </div>
                 <div class="submitButton">
                     <button type="button" [disabled]="cnt_form.invalid" (click)="submit()">Submit</button>
