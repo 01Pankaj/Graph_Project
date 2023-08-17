@@ -12,12 +12,16 @@ import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import {MatIconModule} from '@angular/material/icon';
 import {MatProgressBarModule} from '@angular/material/progress-bar';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { NotificationComponent } from './notification/notification.component';
+import { NotifyComponent } from './notify/notify.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     HomeComponent,
-    GraphComponent
+    GraphComponent,
+    NotificationComponent,
+    NotifyComponent
   ],
   imports: [
     BrowserModule,

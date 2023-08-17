@@ -55,8 +55,17 @@ export class HomeComponent implements OnInit {
     // console.log("Hello from submit function");
     this.submitted = true;
     this._api.getEmotion(`emotion/get_emotion?minute=${0}&cnt_id=${this.cnt_id}`).subscribe((data:any)=>{
-      // console.log("Emotion data",data);
-      this.emotionDataAll = data.response.graph_data;
+      if(data && !data.error){
+        this.emotionDataAll = data.response.graph_data;
+      }
+      else{
+        this._api.obNotify({
+          start:true,
+          code:200,
+          status:'error',
+          message: data.message
+        })
+      }
       setTimeout(() => {
         if(this.reactionData && this.emotionDataAll && this.videoUrl){
           this.data = true;
@@ -64,14 +73,29 @@ export class HomeComponent implements OnInit {
       }, 1000);
     })
     this._api.getReaction(`reaction/get_reaction?minute=${0}&cnt_id=${this.cnt_id}`).subscribe((data:any)=>{
-      // console.log("Reaction data",data);
-      this.reactionData = data.response;
+      if(data && !data.error){
+        this.reactionData = data.response;
+      }
+      else{
+        this._api.obNotify({
+          start:true,
+          code:200,
+          status:'error',
+          message: data.message
+        })
+      }
     })
     this._api.getDetails(`content/get_details?cnt_id=${this.cnt_id}`).subscribe((data:any)=>{
-      // console.log("Details data",data);
+      if(data && !data.error){
       this.videoUrl = `${environment.storageUrl}${data.response.cnt_url}`;
-      // console.log(this.videoUrl);
-      
+      }else{
+        this._api.obNotify({
+          start:true,
+          code:200,
+          status:'error',
+          message: data.message
+        })
+      }
     })
   }
 
