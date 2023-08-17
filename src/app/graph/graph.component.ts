@@ -19,6 +19,7 @@ export class GraphComponent {
     @Input() videoDuration:any;
     @Input() emotionDataAll:any;
     @Input() currentTime:any;
+    @Input() selectedValue:any;
 
   
     constructor(private _api:ApiService) { }
@@ -26,12 +27,17 @@ export class GraphComponent {
 
  ngOnInit(){
 
+    console.log(this.selectedValue, "from graph");
+    
     const data = [];
-    const data2 = [];
-  for(let i=0;i<this.emotionDataAll.length;i++){
-    data.push({x:this.emotionDataAll[i].time, y:this.emotionDataAll[i].sad})
-    data2.push({x:this.emotionDataAll[i].time, y:this.emotionDataAll[i].arousal})
-  }
+    // const data2 = [];
+    if (this.selectedValue) {
+        for(let i=0;i<this.emotionDataAll.length;i++){
+            data.push({x:this.emotionDataAll[i].time, y:this.emotionDataAll[i][this.selectedValue]})
+            // data2.push({x:this.emotionDataAll[i].time, y:this.emotionDataAll[i].arousal})
+          }
+    }
+  
       // Animation-----
   const delayBetweenPoints = 1000;
   const previousY = (ctx) => ctx.index === 0 ? ctx.chart.scales.y.getPixelForValue(100) : ctx.chart.getDatasetMeta(ctx.datasetIndex).data[ctx.index - 1].getProps(['y'], true).y;
@@ -79,15 +85,7 @@ export class GraphComponent {
                 data: data,
                 fill: true,
                   backgroundColor: 'rgba(205,0,0,0.3)'
-            },
-                {
-                    borderColor: "#00FFFF",
-                    borderWidth: 2,
-                    radius: 0,
-                    data: data2,
-                    fill: true,
-                      backgroundColor: 'rgba(0,0,197,0.3)'
-                }]
+            }]
         },
         options: {
             animation,

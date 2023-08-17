@@ -1,39 +1,76 @@
 <div class="parent">
-    <div class="body" *ngIf="!submitted">
-        <div class="heading">
-            View Data of emotion reaction
-        </div>
-        <div class="form">
-            <form [formGroup]="cnt_form">
-                <div class="formGroup">
-                    <label for="cnt_id">Enter Cnt_id : </label>
-                    <input type="number" formControlName="cnt_id" (keydown.enter)="submit()">
+    <div class="logo-area">
+        <img src="https://corporate.monetanalytics.com/assets/logofull.svg" alt="">
+    </div>
+    <div class="body" *ngIf="!emotiontSelected">
+        <div class="form-container">
+            <div class="form" *ngIf="!submitted">
+                <div class="heading">
+                    View Data of emotion reaction
                 </div>
-                <div class="submitButton">
-                    <button type="button" [disabled]="cnt_form.invalid" (click)="submit()">Submit</button>
-                </div>
-            </form>
+                <form [formGroup]="cnt_form">
+                    <div class="formGroup">
+                        <label for="cnt_id">Enter Cnt_id : </label>
+                        <input type="number" formControlName="cnt_id" (keydown.enter)="submit()">
+                    </div>
+                    <div class="submitButton">
+                        <button type="button" [disabled]="cnt_form.invalid" (click)="submit()">Submit</button>
+                    </div>
+                </form>
+            </div>
+            <div class="form" *ngIf="submitted && data">
+                <form [formGroup]="emotion_form">
+                    <div class="formGroup" style="display: flex; align-items: center;">
+                        <label for="cnt_id">Select Emotion : </label>
+                        <!-- <select formControlName="emotion">
+                            <ng-container *ngFor="let emotion of emotions">
+                                <option [value]="emotion">{{emotion}}</option>
+                            </ng-container>
+                        </select> -->
+                        <div class="select">
+                            <select  (change)="changeEmotion($event)" formControlName="emotion">
+                                <option value="">--Choose Emotion--</option>
+                                <option *ngFor="let emotion of emotions" [ngValue]="emotion">
+                                    {{ emotion }}
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="submitButton">
+                        <button type="button" [disabled]="emotion_form.invalid"
+                            (click)="submitEmotion()">Submit</button>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
-    <div class="video-caintainer" fxLayout="row" fxFlex="90" fxLayoutAlign="center center" *ngIf="submitted && data">
+    <div class="video-caintainer" fxLayout="row" fxFlex="90" fxLayoutAlign="center center"
+        *ngIf="emotiontSelected && data">
         <!-- <div class="top">
             <img src="assets/images/monetIcon.png">
         </div> -->
         <div class="content" #content>
             <div class="videoPlay">
-                <video #videoPlay crossOrigin="anonymous" [src]="videoUrl" (play)="Start($event)" (ended)="Ended($event)" (pause)="Pause($event)" (timeupdate)="ontimeUpdate($event)" (waiting)="waiting()" (playing)="playing()">
+                <video #videoPlay crossOrigin="anonymous" [src]="videoUrl" (play)="Start($event)"
+                    (ended)="Ended($event)" (pause)="Pause($event)" (timeupdate)="ontimeUpdate($event)"
+                    (waiting)="waiting()" (playing)="playing()">
                 </video>
-               <mat-progress-bar [value]="Duration" mode="determinate"></mat-progress-bar>
-               <mat-icon class="icon" (click)="play()" *ngIf="!Play && showControls">play_arrow</mat-icon>
-               <mat-icon class="icon" (click)="stop()" *ngIf="!Stop && showControls">pause</mat-icon>
+                <!-- <mat-progress-bar [value]="Duration" mode="determinate"></mat-progress-bar> -->
+                <mat-icon class="icon" (click)="play()" *ngIf="!Play && showControls">play_arrow</mat-icon>
+                <mat-icon class="icon" (click)="stop()" *ngIf="!Stop && showControls">pause</mat-icon>
 
-                <app-graph class="chart-component" *ngIf="emotionData" [emotionData]="emotionData" [videoDuration]="videoDuration" [emotionDataAll]="emotionDataAll" [currentTime]="videoCurrentTime"></app-graph>
-                 <!-- <mat-progress-bar [value]="Duration" mode="determinate"></mat-progress-bar> -->
-            <!-- <mat-icon class="icon" (click)="play()" *ngIf="!Play">play_arrow</mat-icon> -->
+                <app-graph class="chart-component" *ngIf="selectedValue" [emotionData]="emotionData"
+                    [videoDuration]="videoDuration" [emotionDataAll]="emotionDataAll" [currentTime]="videoCurrentTime"
+                    [selectedValue]="selectedValue"></app-graph>
+                <!-- <mat-progress-bar [value]="Duration" mode="determinate"></mat-progress-bar> -->
+                <!-- <mat-icon class="icon" (click)="play()" *ngIf="!Play">play_arrow</mat-icon> -->
             </div>
         </div>
-     </div>
+    </div>
     <div class="spinner" *ngIf="submitted && !data">
+        <mat-spinner color="primary"></mat-spinner>
+    </div>
+    <div class="spinner" *ngIf="emotiontSelected && !data">
         <mat-spinner color="primary"></mat-spinner>
     </div>
     <div class="spinner2" *ngIf="videoLoader">

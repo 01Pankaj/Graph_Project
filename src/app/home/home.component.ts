@@ -6,10 +6,11 @@ import { environment } from 'src/environments/environment';
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
-  styleUrls: ['./home.component.scss']
+  styleUrls: ['./home.component.scss'],
 })
 export class HomeComponent implements OnInit {
   cnt_form:FormGroup;
+  emotion_form:FormGroup;
   cnt_id:number;
   submitted:boolean = false;
   data:any;
@@ -33,12 +34,17 @@ export class HomeComponent implements OnInit {
   Waiting:boolean = false;
   showControls:boolean = true;
   videoLoader:boolean = false;
+  showSelect:boolean = false;
+  emotiontSelected: boolean = false;
+  selectedValue: any;
   @ViewChild('video') video:ElementRef;
   @ViewChild('videoPlay') videoPlay:ElementRef;
+  emotions = ["Angry","Arousal","Attention","Disgust","Evalence","Happy","Neutral","Sad","Scare","Surprised"];
   constructor(private _fb:FormBuilder, private _api:ApiService) { }
 
   ngOnInit(): void {
     this.formValidation();
+    this.emotionFormValidation();
   }
 
   
@@ -46,6 +52,21 @@ export class HomeComponent implements OnInit {
     this.cnt_form = this._fb.group({
       cnt_id : new FormControl('', Validators.required)
     })
+  }
+
+  emotionFormValidation(){
+    this.emotion_form = this._fb.group({
+      emotion : new FormControl('', Validators.required)
+    })
+  }
+  get emotionName() {
+    return this.emotion_form.get('emotion');
+  }
+
+  changeEmotion(e: any){
+    this.emotionName?.setValue(e.target.value, {
+      onlySelf: true,
+    });
   }
 
  
@@ -57,6 +78,7 @@ export class HomeComponent implements OnInit {
     this._api.getEmotion(`emotion/get_emotion?minute=${0}&cnt_id=${this.cnt_id}`).subscribe((data:any)=>{
       if(data && !data.error){
         this.emotionDataAll = data.response.graph_data;
+        this.showSelect = true;
       }
       else{
         this._api.obNotify({
@@ -97,6 +119,14 @@ export class HomeComponent implements OnInit {
         })
       }
     })
+  }
+
+  submitEmotion(){
+    this.emotiontSelected = true;
+    this.selectedValue = this.emotion_form.value.emotion.toLowerCase();
+    console.log(this.selectedValue);
+    console.log(this.selectedValue);
+    
   }
 
   PlayVideo(e:any){
@@ -201,5 +231,7 @@ export class HomeComponent implements OnInit {
     console.log(this.video, "playing");
     this.Waiting = false;
   }
+
+
 
 }
