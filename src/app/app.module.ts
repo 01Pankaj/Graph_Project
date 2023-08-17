@@ -12,12 +12,15 @@ import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import {MatIconModule} from '@angular/material/icon';
 import {MatProgressBarModule} from '@angular/material/progress-bar';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { CohortsComponent } from './cohorts/cohorts.component';
+import {MatButtonToggleModule} from '@angular/material/button-toggle';
 
 @NgModule({
   declarations: [
     AppComponent,
     HomeComponent,
-    GraphComponent
+    GraphComponent,
+    CohortsComponent
   ],
   imports: [
     BrowserModule,
@@ -27,7 +30,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     BrowserAnimationsModule,
     HttpClientModule,
     MatIconModule,
-    MatProgressBarModule
+    MatProgressBarModule,
+    MatButtonToggleModule
   ],
   providers: [],
   bootstrap: [AppComponent]

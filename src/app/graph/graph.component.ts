@@ -29,7 +29,7 @@ export class GraphComponent {
     const data = [];
     const data2 = [];
   for(let i=0;i<this.emotionDataAll.length;i++){
-    data.push({x:this.emotionDataAll[i].time, y:this.emotionDataAll[i].sad})
+    data.push({x:this.emotionDataAll[i].time, y:this.emotionDataAll[i].evalence})
     data2.push({x:this.emotionDataAll[i].time, y:this.emotionDataAll[i].arousal})
   }
       // Animation-----
@@ -63,10 +63,7 @@ export class GraphComponent {
                 return ctx.index * delayBetweenPoints;
             }
         },
-        tension:{
-          from:1,
-          to:0.4
-        }
+       
     };
 
     const config = {
@@ -80,18 +77,20 @@ export class GraphComponent {
                 fill: true,
                   backgroundColor: 'rgba(205,0,0,0.3)'
             },
-                {
-                    borderColor: "#00FFFF",
-                    borderWidth: 2,
-                    radius: 0,
-                    data: data2,
-                    fill: true,
-                      backgroundColor: 'rgba(0,0,197,0.3)'
-                }]
+                // {
+                //     borderColor: "#00FFFF",
+                //     borderWidth: 2,
+                //     radius: 0,
+                //     data: data2,
+                //     fill: true,
+                //       backgroundColor: 'rgba(0,0,197,0.3)'
+                // }
+            ]
         },
         options: {
             animation,
             maintainAspectRatio:false,
+            lineTension:0.4,
             interaction: {
                 intersect: false
             },

@@ -33,6 +33,7 @@ export class HomeComponent implements OnInit {
   Waiting:boolean = false;
   showControls:boolean = true;
   videoLoader:boolean = false;
+  metricsData:any;
   @ViewChild('video') video:ElementRef;
   @ViewChild('videoPlay') videoPlay:ElementRef;
   constructor(private _fb:FormBuilder, private _api:ApiService) { }
@@ -54,6 +55,7 @@ export class HomeComponent implements OnInit {
     this.cnt_id = this.cnt_form.value.cnt_id;
     // console.log("Hello from submit function");
     this.submitted = true;
+    localStorage.setItem('cnt_id',this.cnt_id.toString())
     this._api.getEmotion(`emotion/get_emotion?minute=${0}&cnt_id=${this.cnt_id}`).subscribe((data:any)=>{
       // console.log("Emotion data",data);
       this.emotionDataAll = data.response.graph_data;
@@ -68,10 +70,10 @@ export class HomeComponent implements OnInit {
       this.reactionData = data.response;
     })
     this._api.getDetails(`content/get_details?cnt_id=${this.cnt_id}`).subscribe((data:any)=>{
-      // console.log("Details data",data);
       this.videoUrl = `${environment.storageUrl}${data.response.cnt_url}`;
-      // console.log(this.videoUrl);
-      
+    })
+    this._api.getSummary(`summary/simplified_summary_metrics?cnt_id=${this.cnt_id}`).subscribe((data:any)=>{
+      this.metricsData = data.response.key_metrics;
     })
   }
 

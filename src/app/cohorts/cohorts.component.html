@@ -1,0 +1,8 @@
+<mat-button-toggle-group [value]="selectCohort">
+    <ng-container>
+        <mat-button-toggle *ngFor="let coh of metricsData; let co = index" [value]="co" (click)="coh.name!=='All' ? selectCohort=co : '';getEmotion(coh)" title  [ngClass]="'cohorts'">
+      {{coh.name | titlecase}}  
+    </mat-button-toggle>
+    </ng-container>
+   
+  </mat-button-toggle-group>

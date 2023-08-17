@@ -21,6 +21,10 @@ export class ApiService {
     return this.http.get(environment.nodeUrl + endpoint)
   }
 
+  getSummary(endpoint:any){
+    return this.http.get(environment.nodeUrl + endpoint)
+  }
+
   getContent(endpoint:any){
     return this.http.get(environment.phpUrl + endpoint)
   }
