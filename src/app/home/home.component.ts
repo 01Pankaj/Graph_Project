@@ -31,6 +31,8 @@ export class HomeComponent implements OnInit {
   End:boolean = false;
   videoCurrentTime:any;
   Waiting:boolean = false;
+  showControls:boolean = true;
+  videoLoader:boolean = false;
   @ViewChild('video') video:ElementRef;
   @ViewChild('videoPlay') videoPlay:ElementRef;
   constructor(private _fb:FormBuilder, private _api:ApiService) { }
@@ -50,10 +52,10 @@ export class HomeComponent implements OnInit {
 
   submit(){
     this.cnt_id = this.cnt_form.value.cnt_id;
-    console.log("Hello from submit function");
+    // console.log("Hello from submit function");
     this.submitted = true;
     this._api.getEmotion(`emotion/get_emotion?minute=${0}&cnt_id=${this.cnt_id}`).subscribe((data:any)=>{
-      console.log("Emotion data",data);
+      // console.log("Emotion data",data);
       this.emotionDataAll = data.response.graph_data;
       setTimeout(() => {
         if(this.reactionData && this.emotionDataAll && this.videoUrl){
@@ -90,9 +92,15 @@ export class HomeComponent implements OnInit {
     // ************************************************************** Function to play video **********************************************************
 
     play() {
-      this.videoPlay.nativeElement.play();
-      this.Play = true;
-      this.Stop = false;
+      this._api.videoStart(true);
+      this.videoLoader = true;
+      setTimeout(() => {
+        this.videoLoader = false;
+        this.videoPlay.nativeElement.play();
+        this.Play = true;
+        this.Stop = false;
+      }, 1800);
+      this.showControls = false;
     }
   
     // ************************************************************** Function to stop video **********************************************************
@@ -120,7 +128,7 @@ export class HomeComponent implements OnInit {
         }
       }
     }
-      console.log("New Data", this.emotionData,this.emotionDataAll,this.videoCurrentTime);
+      // console.log("New Data", this.emotionData,this.emotionDataAll,this.videoCurrentTime);
     }, 1000)
     console.log("Started", e);
     this.interval = setInterval(() => {
@@ -131,15 +139,17 @@ export class HomeComponent implements OnInit {
 
   // ************************************************************** Function hits when video is paused **********************************************************
   Pause(e: any) {
-    console.log("Paused", e);
+    // console.log("Paused", e);
     clearInterval(this.interval)
     clearInterval(this.interval2);
     this.Started = false;
     this.Paused = true;
+    this._api.pauseVideo(true)
   }
 
   // ************************************************************** Function hits when video ends **********************************************************
   Ended(e: any) {
+    this._api.videoEnd(true)
     console.log("Ended", e);
    this.Play = false;
    this.Stop = true;
@@ -147,7 +157,7 @@ export class HomeComponent implements OnInit {
     clearInterval(this.interval2);
     this.End = true;
     this.Started = false;
-    
+    this.showControls = true;
   }
 
   // ************************************************************** Function hits on progress of video **********************************************************

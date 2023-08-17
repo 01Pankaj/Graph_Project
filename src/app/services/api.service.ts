@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { EventEmitter, Injectable, Output } from '@angular/core';
 import { environment } from 'src/environments/environment';
 
 @Injectable({
@@ -23,5 +23,20 @@ export class ApiService {
 
   getContent(endpoint:any){
     return this.http.get(environment.phpUrl + endpoint)
+  }
+
+  @Output() pauseGraphEmitter = new EventEmitter();
+  pauseVideo(data:any){
+    this.pauseGraphEmitter.emit(true)
+  }
+
+  @Output() videoStartEmitter = new EventEmitter();
+  videoStart(data:any){
+    this.videoStartEmitter.emit(true)
+  }
+
+  @Output() videoEndEmitter = new EventEmitter();
+  videoEnd(data:any){
+    this.videoEndEmitter.emit(true)
   }
 }

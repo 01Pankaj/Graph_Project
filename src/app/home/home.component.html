@@ -24,8 +24,8 @@
                 <video #videoPlay crossOrigin="anonymous" [src]="videoUrl" (play)="Start($event)" (ended)="Ended($event)" (pause)="Pause($event)" (timeupdate)="ontimeUpdate($event)" (waiting)="waiting()" (playing)="playing()">
                 </video>
                <mat-progress-bar [value]="Duration" mode="determinate"></mat-progress-bar>
-               <mat-icon class="icon" (click)="play()" *ngIf="!Play">play_arrow</mat-icon>
-               <mat-icon class="icon" (click)="stop()" *ngIf="!Stop">pause</mat-icon>
+               <mat-icon class="icon" (click)="play()" *ngIf="!Play && showControls">play_arrow</mat-icon>
+               <mat-icon class="icon" (click)="stop()" *ngIf="!Stop && showControls">pause</mat-icon>
 
                 <app-graph class="chart-component" *ngIf="emotionData" [emotionData]="emotionData" [videoDuration]="videoDuration" [emotionDataAll]="emotionDataAll" [currentTime]="videoCurrentTime"></app-graph>
                  <!-- <mat-progress-bar [value]="Duration" mode="determinate"></mat-progress-bar> -->
@@ -34,6 +34,9 @@
         </div>
      </div>
     <div class="spinner" *ngIf="submitted && !data">
+        <mat-spinner color="primary"></mat-spinner>
+    </div>
+    <div class="spinner2" *ngIf="videoLoader">
         <mat-spinner></mat-spinner>
     </div>
 </div>
