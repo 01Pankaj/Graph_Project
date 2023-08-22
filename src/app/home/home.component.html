@@ -20,7 +20,7 @@
             </div>
             <div class="form" *ngIf="submitted && data">
                 <form [formGroup]="emotion_form">
-                    <div class="formGroup" style="display: flex; align-items: center;">
+                    <div class="formGroup">
                         <label for="cnt_id">Select Emotion : </label>
                         <!-- <select formControlName="emotion">
                             <ng-container *ngFor="let emotion of emotions">
@@ -51,7 +51,7 @@
         </div> -->
         <div class="content" #content>
             <div class="videoPlay">
-                <video #videoPlay crossOrigin="anonymous" [src]="videoUrl" (play)="Start($event)"
+                <video #videoPlay playsInline crossOrigin="anonymous" [src]="videoUrl" (play)="Start($event)"
                     (ended)="Ended($event)" (pause)="Pause($event)" (timeupdate)="ontimeUpdate($event)"
                     (waiting)="waiting()" (playing)="playing()">
                 </video>

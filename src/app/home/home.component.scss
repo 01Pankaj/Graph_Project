@@ -22,6 +22,7 @@
     font-weight: 600;
     font-family: monospace;
     margin-bottom: 10%;
+    line-height: 110%;
 }
 
 form{
@@ -404,4 +405,23 @@ select::-ms-expand {
 }
 .select:hover::after {
    color: #23b499;
+}
+
+.formGroup{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+@media screen and (max-width: 992px) {
+    .heading{
+        text-align: center;
+    }
+
+    .formGroup{
+        display: flex;
+        flex-direction: column;
+        row-gap: 15px;
+    }
+
 }
