@@ -40,6 +40,45 @@ export class HomeComponent implements OnInit {
   @ViewChild('video') video:ElementRef;
   @ViewChild('videoPlay') videoPlay:ElementRef;
   emotions = ["Angry","Arousal","Attention","Disgust","Evalence","Happy","Neutral","Sad","Scare","Surprised"];
+  cohort:any = {};
+  cohorts:any = [
+    {
+      name: 'Emotion Intensity',
+      image: 'emotion_intensity',
+      type: 'single',
+      control: 'emoting',
+      values: [
+        {name: 'High', value: 'high'},
+        {name: 'Medium', value: 'medium'},
+        {name: 'Low', value: 'low'}
+      ]
+    },
+    {
+      name: 'Age Group',
+      type: 'single',
+      image: 'age',
+      control: 'age_range',
+      values: [
+        {name: '18-24', value: '18-24'},
+        {name: '25-34', value: '25-34'},
+        {name: '35-55', value: '35-55'},
+        {name: 'Millennial (18-34)', value: '18-34'},
+        {name: 'Non-Millennial (35-65)', value: '35-65'},
+        {name: '17-29', value: '17-29'},
+        {name: '30-49', value: '30-49'}
+      ]
+    },
+    {
+      name: 'Gender',
+      type: 'single',
+      image: 'gender',
+      control: 'gender',
+      values: [
+        { name: 'Male', value: 'm'},
+        { name: 'Female', value: 'f'}
+      ]
+    }
+  ];
   constructor(private _fb:FormBuilder, private _api:ApiService) { }
 
   ngOnInit(): void {
@@ -56,44 +95,17 @@ export class HomeComponent implements OnInit {
 
   emotionFormValidation(){
     this.emotion_form = this._fb.group({
-      emotion : new FormControl('', Validators.required)
+      emotion : new FormControl('', Validators.required),
+      cohort : new FormControl('', Validators.required)
     })
   }
-  get emotionName() {
-    return this.emotion_form.get('emotion');
-  }
 
-  changeEmotion(e: any){
-    this.emotionName?.setValue(e.target.value, {
-      onlySelf: true,
-    });
-  }
 
  
-
+// Function hits when user submits the cnt_id 
   submit(){
     this.cnt_id = this.cnt_form.value.cnt_id;
-    // console.log("Hello from submit function");
     this.submitted = true;
-    this._api.getEmotion(`emotion/get_emotion?minute=${0}&cnt_id=${this.cnt_id}`).subscribe((data:any)=>{
-      if(data && !data.error){
-        this.emotionDataAll = data.response.graph_data;
-        this.showSelect = true;
-      }
-      else{
-        this._api.obNotify({
-          start:true,
-          code:200,
-          status:'error',
-          message: data.message
-        })
-      }
-      setTimeout(() => {
-        if(this.reactionData && this.emotionDataAll && this.videoUrl){
-          this.data = true;
-        }
-      }, 1000);
-    })
     this._api.getReaction(`reaction/get_reaction?minute=${0}&cnt_id=${this.cnt_id}`).subscribe((data:any)=>{
       if(data && !data.error){
         this.reactionData = data.response;
@@ -110,6 +122,7 @@ export class HomeComponent implements OnInit {
     this._api.getDetails(`content/get_details?cnt_id=${this.cnt_id}`).subscribe((data:any)=>{
       if(data && !data.error){
       this.videoUrl = `${environment.storageUrl}${data.response.cnt_url}`;
+      this.data = true;
       }else{
         this._api.obNotify({
           start:true,
@@ -119,13 +132,15 @@ export class HomeComponent implements OnInit {
         })
       }
     })
+    this.getCohortsValue(this.cnt_id)
   }
 
+
+  // Function hits when user selects the emotion and cohort for a cnt_id to plot the graph data 
   submitEmotion(){
-    this.emotiontSelected = true;
-    this.selectedValue = this.emotion_form.value.emotion.toLowerCase();
-    console.log(this.selectedValue);
-    console.log(this.selectedValue);
+    this.getEmotion(this.cnt_id,this.cohort)
+    // this.emotiontSelected = true;
+    // this.selectedValue = this.emotion_form.value.emotion.toLowerCase();
     
   }
 
@@ -231,7 +246,55 @@ export class HomeComponent implements OnInit {
     console.log(this.video, "playing");
     this.Waiting = false;
   }
+  
+  // Function to get the corresponding cohorts value for the selected cnt_id 
+  getCohortsValue(cnt_id:any){
+    this._api.getCohorts(`additional_cohorts/get_additional_cohorts?cnt_id=${cnt_id}`).subscribe((success:any)=>{
+      if (success && success.response) {
+        const data = success.response.groups.map( (a, i) => {
+          const ob = {};
+          ob['name'] = a.group;
+          ob['values'] = a.options.map( b => {
+            const ab = {};
+            ab['name'] = b.option;
+            ab['value'] = b.slag;
+            return ab;
+          });
+          return ob;
+        });
+       this.cohorts = this.cohorts.concat(data); 
+      }
+    })
+  }
 
 
+// Fucntion to concatenate the cohorts with the fixed ones 
+  selectCohort(index:any,value:any){
+    this.cohort = {};
+    index === 0 ? this.cohort['emoting'] = value : index === 1 ? this.cohort['age-range'] = value : index === 2 ? this.cohort['gender'] = value : this.cohort['slag'] = value;
+  }
+
+
+  // Fucntion to get the emotion of the selected cnt_id and the selected cohorts value 
+  getEmotion(cnt_id:any,cohort:any){
+    this._api.getEmotion(`emotion/get_emotion?minute=${0}&cnt_id=${cnt_id}&${Object.keys(cohort)[0]}=${Object.values(cohort)[0]}`).subscribe((res:any)=>{
+      if(res && !res.error && res.response.graph_data){
+        this.emotionDataAll = res.response.graph_data;
+        this.showSelect = true;
+        this.data = true;
+        this.emotiontSelected = true;
+    this.selectedValue = this.emotion_form.value.emotion.toLowerCase();
+      }
+      else{
+        this._api.obNotify({
+          start:true,
+          code:200,
+          status:'error',
+          message: res.message
+        })
+      }
+    })
+
+  }
 
 }

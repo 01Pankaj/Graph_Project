@@ -20,22 +20,33 @@
             </div>
             <div class="form" *ngIf="submitted && data">
                 <form [formGroup]="emotion_form">
+                    <div class="formGroupParent">
                     <div class="formGroup">
                         <label for="cnt_id">Select Emotion : </label>
-                        <!-- <select formControlName="emotion">
-                            <ng-container *ngFor="let emotion of emotions">
-                                <option [value]="emotion">{{emotion}}</option>
-                            </ng-container>
-                        </select> -->
-                        <div class="select">
-                            <select  (change)="changeEmotion($event)" formControlName="emotion">
-                                <option value="">--Choose Emotion--</option>
-                                <option *ngFor="let emotion of emotions" [ngValue]="emotion">
-                                    {{ emotion }}
-                                </option>
-                            </select>
-                        </div>
+                        <mat-form-field>
+                            <mat-label>--Emotion--</mat-label>
+                            <mat-select formControlName="emotion">
+                                <mat-option *ngFor="let emotion of emotions" [value]="emotion">
+                                  {{emotion}}
+                                </mat-option>
+                            </mat-select>
+                          </mat-form-field>
                     </div>
+                    <div class="formGroup">
+                        <label for="cnt_id">Select Cohort : </label>
+                            <mat-form-field>
+                                <mat-label>--Cohort--</mat-label>
+                                <mat-select formControlName="cohort">
+                                  <mat-optgroup *ngFor="let values of cohorts;let i=index" [label]="values.name"
+                                                [disabled]="values.disabled">
+                                    <mat-option *ngFor="let options of values.values" [value]="options.value" [id]="i.toString()" (click)="selectCohort(i,options.value)">
+                                      {{options.name}}
+                                    </mat-option>
+                                  </mat-optgroup>
+                                </mat-select>
+                              </mat-form-field>
+                    </div>
+                </div>
                     <div class="submitButton">
                         <button type="button" [disabled]="emotion_form.invalid"
                             (click)="submitEmotion()">Submit</button>
