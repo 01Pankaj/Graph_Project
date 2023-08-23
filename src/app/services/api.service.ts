@@ -27,6 +27,10 @@ export class ApiService {
     return this.http.get(environment.nodeUrl + endpoint)
   }
 
+  getCohorts(endpoint:any){
+    return this.http.get(environment.nodeUrl + endpoint)
+  }
+
   getDetails(endpoint:any){
     return this.http.get(environment.nodeUrl + endpoint)
   }
