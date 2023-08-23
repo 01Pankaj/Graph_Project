@@ -127,75 +127,81 @@ export class GraphComponent {
       data: {
         datasets: [
           {
-            borderColor:
-              this.selectedValue == 'angry'
-                ? 'rgb(205,0,0)'
-                : this.selectedValue == 'arousal'
-                ? 'rgb(0, 255, 255)'
-                : this.selectedValue == 'attention'
-                ? 'rgb(255, 200, 0)'
-                : this.selectedValue == 'disgust'
-                ? 'rgb(49, 46, 53)'
-                : this.selectedValue == 'evalence'
-                ? 'rgb(210, 100, 250)'
-                : this.selectedValue == 'happy'
-                ? 'rgb(0, 100, 0)'
-                : this.selectedValue == 'neutral'
-                ? 'rgb(80, 80, 80)'
-                : this.selectedValue == 'sad'
-                ? 'rgb(120, 50, 120)'
-                : this.selectedValue == 'scare'
-                ? 'rgb(100, 5, 35)'
-                : this.selectedValue == 'surprised'
-                ? 'rgb(255, 255, 0)'
-                : 'rgba(255,255,255)',
+            borderColor: '#000000',
+              // this.selectedValue == 'angry'
+              //   ? 'rgb(205,0,0)'
+              //   : this.selectedValue == 'arousal'
+              //   ? 'rgb(0, 255, 255)'
+              //   : this.selectedValue == 'attention'
+              //   ? 'rgb(255, 200, 0)'
+              //   : this.selectedValue == 'disgust'
+              //   ? 'rgb(49, 46, 53)'
+              //   : this.selectedValue == 'evalence'
+              //   ? 'rgb(210, 100, 250)'
+              //   : this.selectedValue == 'happy'
+              //   ? 'rgb(0, 100, 0)'
+              //   : this.selectedValue == 'neutral'
+              //   ? 'rgb(80, 80, 80)'
+              //   : this.selectedValue == 'sad'
+              //   ? 'rgb(120, 50, 120)'
+              //   : this.selectedValue == 'scare'
+              //   ? 'rgb(100, 5, 35)'
+              //   : this.selectedValue == 'surprised'
+              //   ? 'rgb(255, 255, 0)'
+              //   : 'rgba(255,255,255)',
             borderWidth: 3,
             radius: 0,
             data: data,
-            fill: true,
-            backgroundColor: (ctx) => {
+            fill: 'origin',
+            backgroundColor:  
+            (ctx) => {
               const canvas = ctx.chart.ctx;
               console.log(canvas, 'canvas');
-              let gradient = canvas.createLinearGradient(
+              let gradient = 
+              canvas.createLinearGradient(
                 0,
                 0,
                 0,
                 canvas.canvas.height
               );
-              if (this.selectedValue == 'angry') {
-                gradient.addColorStop(0, 'rgba(205,0,0,0.9)');
-                gradient.addColorStop(1, 'rgba(205,0,0,0.05)');
-              } else if (this.selectedValue == 'arousal') {
-                gradient.addColorStop(0, 'rgba(0, 255, 255,0.9)');
-                gradient.addColorStop(1, 'rgba(0, 255, 255,0.05)');
-              } else if (this.selectedValue == 'attention') {
-                gradient.addColorStop(0, 'rgba(255, 200, 0,0.9)');
-                gradient.addColorStop(1, 'rgba(255, 200, 0,0.05)');
-              } else if (this.selectedValue == 'disgust') {
-                gradient.addColorStop(0, 'rgba(49, 46, 53,0.9)');
-                gradient.addColorStop(1, 'rgba(49, 46, 53,0.05)');
-              } else if (this.selectedValue == 'evalence') {
-                gradient.addColorStop(0, 'rgba(210, 100, 250,0.9)');
-                gradient.addColorStop(1, 'rgba(210, 100, 250,0.05)');
-              } else if (this.selectedValue == 'happy') {
-                gradient.addColorStop(0, 'rgba(0, 100, 0,0.9)');
-                gradient.addColorStop(1, 'rgba(0, 100, 0,0.05)');
-              } else if (this.selectedValue == 'neutral') {
-                gradient.addColorStop(0, 'rgba(80,80,80,0.9)');
-                gradient.addColorStop(1, 'rgba(127, 86, 217, 0.05)');
-              } else if (this.selectedValue == 'sad') {
-                gradient.addColorStop(0, 'rgba(120, 50, 120,0.9)');
-                gradient.addColorStop(1, 'rgba(127, 86, 217, 0.05)');
-              } else if (this.selectedValue == 'scare') {
-                gradient.addColorStop(0, 'rgba(100, 5, 35,0.9)');
-                gradient.addColorStop(1, 'rgba(100, 5, 35,0.05)');
-              } else if (this.selectedValue == 'surprised') {
-                gradient.addColorStop(0, '(255, 255, 0,0.9)');
-                gradient.addColorStop(1, '(255, 255, 0,0.05)');
-              } else {
-                gradient.addColorStop(0, 'rgba(255,255,255,0.9)');
-                gradient.addColorStop(1, 'rgba(255,255,255,0.05)');
-              }
+              gradient.addColorStop(0, 'rgba(234,217,217,0)');
+              gradient.addColorStop(0.5, 'rgba(234,217,217,0.5)');
+              gradient.addColorStop(1, 'rgba(217,217,217,1)');
+
+              // if (this.selectedValue == 'angry') {
+              //   gradient.addColorStop(0, 'rgba(205,0,0,0.9)');
+              //   gradient.addColorStop(1, 'rgba(205,0,0,0.05)');
+              // } else if (this.selectedValue == 'arousal') {
+              //   gradient.addColorStop(0, 'rgba(0, 255, 255,0.9)');
+              //   gradient.addColorStop(1, 'rgba(0, 255, 255,0.05)');
+              // } else if (this.selectedValue == 'attention') {
+              //   gradient.addColorStop(0, 'rgba(255, 200, 0,0.9)');
+              //   gradient.addColorStop(1, 'rgba(255, 200, 0,0.05)');
+              // } else if (this.selectedValue == 'disgust') {
+              //   gradient.addColorStop(0, 'rgba(49, 46, 53,0.9)');
+              //   gradient.addColorStop(1, 'rgba(49, 46, 53,0.05)');
+              // } else if (this.selectedValue == 'evalence') {
+              //   gradient.addColorStop(0, 'rgba(210, 100, 250,0.9)');
+              //   gradient.addColorStop(1, 'rgba(210, 100, 250,0.05)');
+              // } else if (this.selectedValue == 'happy') {
+              //   gradient.addColorStop(0, 'rgba(0, 100, 0,0.9)');
+              //   gradient.addColorStop(1, 'rgba(0, 100, 0,0.05)');
+              // } else if (this.selectedValue == 'neutral') {
+              //   gradient.addColorStop(0, 'rgba(80,80,80,0.9)');
+              //   gradient.addColorStop(1, 'rgba(127, 86, 217, 0.05)');
+              // } else if (this.selectedValue == 'sad') {
+              //   gradient.addColorStop(0, 'rgba(120, 50, 120,0.9)');
+              //   gradient.addColorStop(1, 'rgba(127, 86, 217, 0.05)');
+              // } else if (this.selectedValue == 'scare') {
+              //   gradient.addColorStop(0, 'rgba(100, 5, 35,0.9)');
+              //   gradient.addColorStop(1, 'rgba(100, 5, 35,0.05)');
+              // } else if (this.selectedValue == 'surprised') {
+              //   gradient.addColorStop(0, '(255, 255, 0,0.9)');
+              //   gradient.addColorStop(1, '(255, 255, 0,0.05)');
+              // } else {
+              //   gradient.addColorStop(0, 'rgba(255,255,255,0.9)');
+              //   gradient.addColorStop(1, 'rgba(255,255,255,0.05)');
+              // }
               return gradient;
             },
           },
@@ -207,6 +213,14 @@ export class GraphComponent {
         interaction: {
           intersect: false,
         },
+        layout:{
+          padding: {
+            top: 0,
+            right: 0,
+            bottom: -10,
+            left: -10
+          }
+        },
         plugins: {
           legend: false,
           annotation: {
@@ -216,19 +230,17 @@ export class GraphComponent {
                 type: 'line',
                 yMin: averageGraphValue,
                 yMax: averageGraphValue,
-                borderColor: 'rgb(255,255,255)',
-                borderWidth: 2,
+                borderColor: '#B7A3E3',
+                borderWidth: 1,
                 label: {
                   display: true,
-                  content: `Average ${this.capsFirstLetter(
-                    this.selectedValue == 'evalance'
-                      ? (this.selectedValue = 'Valance')
-                      : this.selectedValue
-                  )}:  ${averageGraphValue.toFixed(2)}`,
-                  backgroundColor: 'rgba(255,255,255,0.7)',
-                  color: 'black',
+                  content: `Average = ${averageGraphValue.toFixed(2)}`,
+                  backgroundColor: 'rgba(255,255,255,0)',
+                  color: 'white',
                   position: 'end',
-                  yAdjust: 17,
+                  yAdjust: -17,
+                  fontSize: 12,
+                  fontFamily: "'Inter'"
                 },
               },
             },
@@ -238,23 +250,23 @@ export class GraphComponent {
           x: {
             type: 'linear',
             grid: {
-              color: function (context) {
-                const chart = context.chart;
-                const { ctx, chartArea } = chart;
+              color: 'rgba(198, 185, 226, 0.63)', 
+              // function (context) {
+              //   const chart = context.chart;
+              //   const { ctx, chartArea } = chart;
 
-                if (!chartArea) {
-                  // This case happens on initial chart load
-                  return;
-                }
-                return getGradient(ctx, chartArea);
-              },
-              lineWidth: 2,
+              //   if (!chartArea) {
+              //     // This case happens on initial chart load
+              //     return;
+              //   }
+              //   return getGradient(ctx, chartArea);
+              // },
+              lineWidth: 1,
             },
             ticks: {
-              stepSize: data.length < 30 ? 0.5 : 1,
-              precision: 0,
-              color: 'white',
+              stepSize: data.length < 30 ? 0.5 : 5,
               beginAtZero: true,
+              display: false
             },
             border: {
               dash: [5, 5],
@@ -265,7 +277,7 @@ export class GraphComponent {
               display: false,
             },
             ticks: {
-              color: 'white',
+              display: false
             },
           },
         },
@@ -280,7 +292,7 @@ export class GraphComponent {
       } else {
         this.myChart = new Chart(this.canvas, config);
       }
-      console.log('Hello from graph componnt');
+      // console.log('Hello from graph componnt');
     });
 
     this._api.videoEndEmitter.subscribe((response: any) => {});

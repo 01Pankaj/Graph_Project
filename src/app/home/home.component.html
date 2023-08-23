@@ -1,5 +1,5 @@
 <div class="parent">
-    <div class="logo-area">
+    <div class="logo-area" *ngIf="!emotiontSelected">
         <img src="https://corporate.monetanalytics.com/assets/logofull.svg" alt="">
     </div>
     <div class="body" *ngIf="!emotiontSelected">
@@ -44,28 +44,36 @@
             </div>
         </div>
     </div>
-    <div class="video-caintainer" fxLayout="row" fxFlex="90" fxLayoutAlign="center center"
-        *ngIf="emotiontSelected && data">
+    <div class="video-container" *ngIf="emotiontSelected && data">
         <!-- <div class="top">
             <img src="assets/images/monetIcon.png">
         </div> -->
-        <div class="content" #content>
-            <div class="videoPlay">
-                <video #videoPlay playsInline crossOrigin="anonymous" [src]="videoUrl" (play)="Start($event)"
-                    (ended)="Ended($event)" (pause)="Pause($event)" (timeupdate)="ontimeUpdate($event)"
-                    (waiting)="waiting()" (playing)="playing()">
-                </video>
-                <!-- <mat-progress-bar [value]="Duration" mode="determinate"></mat-progress-bar> -->
-                <mat-icon class="icon" (click)="play()" *ngIf="!Play && showControls">play_arrow</mat-icon>
-                <mat-icon class="icon" (click)="stop()" *ngIf="!Stop && showControls">pause</mat-icon>
-
-                <app-graph class="chart-component" *ngIf="selectedValue" [emotionData]="emotionData"
-                    [videoDuration]="videoDuration" [emotionDataAll]="emotionDataAll" [currentTime]="videoCurrentTime"
-                    [selectedValue]="selectedValue"></app-graph>
-                <!-- <mat-progress-bar [value]="Duration" mode="determinate"></mat-progress-bar> -->
-                <!-- <mat-icon class="icon" (click)="play()" *ngIf="!Play">play_arrow</mat-icon> -->
+        <!-- <canvas></canvas> -->
+            <div class="content" #content>
+                <div class="videoPlay">
+                    <video #videoPlay playsInline crossOrigin="anonymous" [src]="videoUrl" (play)="Start($event)"
+                        (ended)="Ended($event)" (pause)="Pause($event)" (timeupdate)="ontimeUpdate($event)"
+                        (waiting)="waiting()" (playing)="playing()">
+                    </video>
+                    <!-- <mat-progress-bar [value]="Duration" mode="determinate"></mat-progress-bar> -->
+                    <mat-icon class="icon" (click)="play()" *ngIf="!Play && showControls">play_arrow</mat-icon>
+                    <mat-icon class="icon" (click)="stop()" *ngIf="!Stop && showControls">pause</mat-icon>
+    
+                    <app-graph class="chart-component" *ngIf="selectedValue" [emotionData]="emotionData"
+                        [videoDuration]="videoDuration" [emotionDataAll]="emotionDataAll" [currentTime]="videoCurrentTime"
+                        [selectedValue]="selectedValue"></app-graph>
+                    <!-- <mat-progress-bar [value]="Duration" mode="determinate"></mat-progress-bar> -->
+                    <!-- <mat-icon class="icon" (click)="play()" *ngIf="!Play">play_arrow</mat-icon> -->
+                    <div class="logo">
+                        <img src="assets/images/monetlogo.svg" alt="monetlogo">
+                    </div>
+                    <div class="download-btn">
+                        <button>
+                            <img src="assets/images/download-btn.svg" alt="download-btn">
+                        </button>
+                    </div>
+                </div>
             </div>
-        </div>
     </div>
     <div class="spinner" *ngIf="submitted && !data">
         <mat-spinner color="primary"></mat-spinner>
