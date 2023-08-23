@@ -67,7 +67,7 @@ export class GraphComponent {
     const animation = {
       x: {
         type: 'number',
-        easing: 'easeOutQuart',
+        easing: 'linear',
         duration: delayBetweenPoints,
         from: NaN, // the point is initially skipped
         delay(ctx) {
@@ -93,9 +93,34 @@ export class GraphComponent {
       },
       tension: {
         from: 1,
-        to: 0.4,
+        to: 0.6,
       },
     };
+
+    //this function is created for the linear gradient of x axis
+    let width, height, gradient;
+    function getGradient(ctx, chartArea) {
+      const chartWidth = chartArea.right - chartArea.left;
+      const chartHeight = chartArea.bottom - chartArea.top;
+      if (!gradient || width !== chartWidth || height !== chartHeight) {
+        // Create the gradient because this is either the first render
+        // or the size of the chart has changed
+        width = chartWidth;
+        height = chartHeight;
+        gradient = ctx.createLinearGradient(
+          0,
+          chartArea.bottom,
+          0,
+          chartArea.top
+        );
+        gradient.addColorStop(1, 'rgba(255, 255, 255, 0.75)');
+        // gradient.addColorStop(0.75, 'rgba(255, 255, 255, 0.5)');
+        gradient.addColorStop(0.5, 'rgba(255, 255, 255, 0.25)');
+        gradient.addColorStop(0, 'rgba(255, 255, 255, 0)');
+      }
+
+      return gradient;
+    }
 
     const config = {
       type: 'line',
@@ -124,32 +149,55 @@ export class GraphComponent {
                 : this.selectedValue == 'surprised'
                 ? 'rgb(255, 255, 0)'
                 : 'rgba(255,255,255)',
-            borderWidth: 2,
+            borderWidth: 3,
             radius: 0,
             data: data,
             fill: true,
-            backgroundColor:
-              this.selectedValue == 'angry'
-                ? 'rgba(205,0,0,0.3)'
-                : this.selectedValue == 'arousal'
-                ? 'rgba(0, 255, 255,0.3)'
-                : this.selectedValue == 'attention'
-                ? 'rgba(255, 200, 0,0.3)'
-                : this.selectedValue == 'disgust'
-                ? 'rgba(49, 46, 53,0.3)'
-                : this.selectedValue == 'evalence'
-                ? 'rgba(210, 100, 250,0.3)'
-                : this.selectedValue == 'happy'
-                ? 'rgba(0, 100, 0,0.3)'
-                : this.selectedValue == 'neutral'
-                ? 'rgba(80,80,80,0.3)'
-                : this.selectedValue == 'sad'
-                ? 'rgba(120, 50, 120,0.3)'
-                : this.selectedValue == 'scare'
-                ? 'rgba(100, 5, 35,0.3)'
-                : this.selectedValue == 'surprised'
-                ? 'rgba(255, 255, 0,0.3)'
-                : 'rgba(255,255,255,0.3)',
+            backgroundColor: (ctx) => {
+              const canvas = ctx.chart.ctx;
+              console.log(canvas, 'canvas');
+              let gradient = canvas.createLinearGradient(
+                0,
+                0,
+                0,
+                canvas.canvas.height
+              );
+              if (this.selectedValue == 'angry') {
+                gradient.addColorStop(0, 'rgba(205,0,0,0.9)');
+                gradient.addColorStop(1, 'rgba(205,0,0,0.05)');
+              } else if (this.selectedValue == 'arousal') {
+                gradient.addColorStop(0, 'rgba(0, 255, 255,0.9)');
+                gradient.addColorStop(1, 'rgba(0, 255, 255,0.05)');
+              } else if (this.selectedValue == 'attention') {
+                gradient.addColorStop(0, 'rgba(255, 200, 0,0.9)');
+                gradient.addColorStop(1, 'rgba(255, 200, 0,0.05)');
+              } else if (this.selectedValue == 'disgust') {
+                gradient.addColorStop(0, 'rgba(49, 46, 53,0.9)');
+                gradient.addColorStop(1, 'rgba(49, 46, 53,0.05)');
+              } else if (this.selectedValue == 'evalence') {
+                gradient.addColorStop(0, 'rgba(210, 100, 250,0.9)');
+                gradient.addColorStop(1, 'rgba(210, 100, 250,0.05)');
+              } else if (this.selectedValue == 'happy') {
+                gradient.addColorStop(0, 'rgba(0, 100, 0,0.9)');
+                gradient.addColorStop(1, 'rgba(0, 100, 0,0.05)');
+              } else if (this.selectedValue == 'neutral') {
+                gradient.addColorStop(0, 'rgba(80,80,80,0.9)');
+                gradient.addColorStop(1, 'rgba(127, 86, 217, 0.05)');
+              } else if (this.selectedValue == 'sad') {
+                gradient.addColorStop(0, 'rgba(120, 50, 120,0.9)');
+                gradient.addColorStop(1, 'rgba(127, 86, 217, 0.05)');
+              } else if (this.selectedValue == 'scare') {
+                gradient.addColorStop(0, 'rgba(100, 5, 35,0.9)');
+                gradient.addColorStop(1, 'rgba(100, 5, 35,0.05)');
+              } else if (this.selectedValue == 'surprised') {
+                gradient.addColorStop(0, '(255, 255, 0,0.9)');
+                gradient.addColorStop(1, '(255, 255, 0,0.05)');
+              } else {
+                gradient.addColorStop(0, 'rgba(255,255,255,0.9)');
+                gradient.addColorStop(1, 'rgba(255,255,255,0.05)');
+              }
+              return gradient;
+            },
           },
         ],
       },
@@ -168,11 +216,15 @@ export class GraphComponent {
                 type: 'line',
                 yMin: averageGraphValue,
                 yMax: averageGraphValue,
-                borderColor: 'rgba(0,255,0,0.5)',
+                borderColor: 'rgb(255,255,255)',
                 borderWidth: 2,
                 label: {
                   display: true,
-                  content: `Average ${this.capsFirstLetter(this.selectedValue == "evalance" ? this.selectedValue = "Valance" : this.selectedValue )}:  ${averageGraphValue.toFixed(2)}`,
+                  content: `Average ${this.capsFirstLetter(
+                    this.selectedValue == 'evalance'
+                      ? (this.selectedValue = 'Valance')
+                      : this.selectedValue
+                  )}:  ${averageGraphValue.toFixed(2)}`,
                   backgroundColor: 'rgba(255,255,255,0.7)',
                   color: 'black',
                   position: 'end',
@@ -186,13 +238,23 @@ export class GraphComponent {
           x: {
             type: 'linear',
             grid: {
-              color: 'rgba(0,255,0,0.5)',
-              borderColor: 'green',
+              color: function (context) {
+                const chart = context.chart;
+                const { ctx, chartArea } = chart;
+
+                if (!chartArea) {
+                  // This case happens on initial chart load
+                  return;
+                }
+                return getGradient(ctx, chartArea);
+              },
               lineWidth: 2,
             },
             ticks: {
               stepSize: data.length < 30 ? 0.5 : 1,
               precision: 0,
+              color: 'white',
+              beginAtZero: true,
             },
             border: {
               dash: [5, 5],
@@ -201,6 +263,9 @@ export class GraphComponent {
           y: {
             grid: {
               display: false,
+            },
+            ticks: {
+              color: 'white',
             },
           },
         },
@@ -222,7 +287,7 @@ export class GraphComponent {
   }
 
   capsFirstLetter(word: string) {
-    let capitalized = "";
-    return capitalized = word.charAt(0).toUpperCase() + word.slice(1)
+    let capitalized = '';
+    return (capitalized = word.charAt(0).toUpperCase() + word.slice(1));
   }
 }
