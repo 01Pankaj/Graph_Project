@@ -293,9 +293,8 @@ input[type=number] {
     transform: translate(-50%,-50%);
     top: 50%;
     left: 50%;
-    height: auto;
-    width: auto;
-    font-size: 85px;
+    height: 85px;
+    width: 85px;
     cursor: pointer;
 }
 .chart-component{
@@ -419,6 +418,12 @@ select::-ms-expand {
 .download-btn button{
     border: none;
     background: transparent;
+}
+
+.download-btn button img{
+    border: none;
+    background: transparent;
+    width: 60%;
 }
 
 // CSS for changing the font family of the mat options text 

@@ -67,7 +67,8 @@
                         (waiting)="waiting()" (playing)="playing()">
                     </video>
                     <!-- <mat-progress-bar [value]="Duration" mode="determinate"></mat-progress-bar> -->
-                    <mat-icon class="icon" (click)="play()" *ngIf="!Play && showControls">play_arrow</mat-icon>
+                    <!-- <mat-icon class="icon" (click)="play()" *ngIf="!Play && showControls">play_arrow</mat-icon> -->
+                    <img class="icon" (click)="play()" *ngIf="!Play && showControls" src="assets/images/play-btn.svg">
                     <mat-icon class="icon" (click)="stop()" *ngIf="!Stop && showControls">pause</mat-icon>
     
                     <app-graph class="chart-component" *ngIf="selectedValue" [emotionData]="emotionData"

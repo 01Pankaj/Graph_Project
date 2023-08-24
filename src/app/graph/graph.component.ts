@@ -113,10 +113,10 @@ export class GraphComponent {
           0,
           chartArea.top
         );
-        gradient.addColorStop(1, 'rgba(255, 255, 255, 0.75)');
+        gradient.addColorStop(0, 'rgba(255, 255, 255, 0.75)');
         // gradient.addColorStop(0.75, 'rgba(255, 255, 255, 0.5)');
         gradient.addColorStop(0.5, 'rgba(255, 255, 255, 0.25)');
-        gradient.addColorStop(0, 'rgba(255, 255, 255, 0)');
+        gradient.addColorStop(1, 'rgba(255, 255, 255, 0)');
       }
 
       return gradient;
@@ -128,6 +128,7 @@ export class GraphComponent {
         datasets: [
           {
             borderColor: '#000000',
+            // borderColor: '#ffffff',
               // this.selectedValue == 'angry'
               //   ? 'rgb(205,0,0)'
               //   : this.selectedValue == 'arousal'
@@ -149,7 +150,7 @@ export class GraphComponent {
               //   : this.selectedValue == 'surprised'
               //   ? 'rgb(255, 255, 0)'
               //   : 'rgba(255,255,255)',
-            borderWidth: 3,
+            borderWidth: 2,
             radius: 0,
             data: data,
             fill: 'origin',
@@ -165,7 +166,7 @@ export class GraphComponent {
                 canvas.canvas.height
               );
               gradient.addColorStop(0, 'rgba(234,217,217,0)');
-              gradient.addColorStop(0.5, 'rgba(234,217,217,0.5)');
+              // gradient.addColorStop(0.5, 'rgba(234,217,217,0.5)');
               gradient.addColorStop(1, 'rgba(217,217,217,1)');
 
               // if (this.selectedValue == 'angry') {
@@ -264,9 +265,10 @@ export class GraphComponent {
               lineWidth: 1,
             },
             ticks: {
-              stepSize: data.length < 30 ? 0.5 : 5,
+              stepSize: data.length < 30 ? 2 : 5,
               beginAtZero: true,
-              display: false
+              display: false,
+              color: "#ffffff"
             },
             border: {
               dash: [5, 5],
