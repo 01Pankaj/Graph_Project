@@ -1,14 +1,13 @@
 .parent{
-    max-width: 100vw;
-    max-height: 100vh;
     width: 100%;
     height: 100%;
     display: flex;
     justify-content: center;
+    flex-direction: column;
 }
 .body{
-    max-width: 100vw;
-    max-height: 100vh;
+    max-width: 100%;
+    max-height: 100%;
     width: 100%;
     height: 100%;
     display: flex;
@@ -22,7 +21,8 @@
     font-size: 28px;
     font-weight: 600;
     font-family: monospace;
-    margin-bottom: 20px;
+    margin-bottom: 10%;
+    line-height: 110%;
 }
 
 form{
@@ -38,11 +38,12 @@ label{
 input{
     padding: 8px;
     border-radius: 8px;
-    border: 2px solid gray;
+    border: 2px solid #79236B;
     outline: none;
-    color: gray;
+    color: black !important;
     font-size: 17px;
     font-family: monospace;
+    margin-left: 5px;
 }
 .submitButton{
     display: flex;
@@ -83,25 +84,41 @@ input[type=number] {
   -moz-appearance: textfield;
 }
 
-.spinner{
-    height: 100vh;
-    width: 100vw;
+.spinner, .spinner2{
+    height: 100%;
+    width: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
+    position: absolute;
+    transform: translate(-50%,-50%);
+    top: 50%;
+    left: 50%;
 }
 
-::ng-deep.mat-progress-spinner[mode=indeterminate] svg{
-   stroke: #3f51b5 !important;
+// .spinner{
+
+.spinner2::ng-deep.mat-progress-spinner[mode=indeterminate] svg{
+   stroke: #ffffff !important;
+}
+.spinner2::ng-deep.mat-progress-spinner circle, .mat-spinner circle{
+    stroke : #ffffff !important
 }
 
 
 
 .app-graph{
     position: absolute;
-    width: 100vw;
-    height: 15vh;
+    width: 100%;
+    height: 100%;
     
+}
+.formGroupParent{
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    width: 100%;
+    column-gap: 20px;
 }
 
 
@@ -165,19 +182,8 @@ input[type=number] {
     // text-align: center;
     color: #000000;
 }
-.mat-form-field{
-    width: 100%;
-}
-.mat-form-field:hover{
-    outline: none;
-    border: none;
-}
-::ng-deep .mat-form-field-appearance-fill .mat-form-field-flex {
-    background-color:  #D9D9D9;;
-}
-::ng-deep .mat-form-field-appearance-fill .mat-form-field-underline::before {
-    height: 0px !important;
-}
+
+
 
 .button-area{
     width: 100%;
@@ -205,11 +211,17 @@ input[type=number] {
     border: 2px solid #6321CE;
 }
 
-.video-caintainer{
+.video-container{
     position: relative;
     width: 100%;
     max-width: 100%;
     min-width: 100%;
+    height: 100%;
+    min-height: 100%;
+    max-height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 .user-video{
     position: absolute;
@@ -234,6 +246,7 @@ input[type=number] {
     width: 100%;
     max-height: 100%;
     height: 100%;
+    position: relative;
     // object-fit: cover;
 }
 
@@ -248,13 +261,13 @@ input[type=number] {
 .content {
     display: flex;
     flex-direction: column;
-    justify-content: space-around;
+    justify-content: center;
     align-items: center;
-    max-width: 100%;
+    max-width: fit-content;
     max-height: 100%;
     width: 100%;
     height: 100%;
-    background-color: white;
+    background-color: #E5E4E2;
     color: black;
     font-size: 20px;
     font-weight: 500;
@@ -272,30 +285,7 @@ input[type=number] {
     margin: 0;
 }
 
-::ng-deep.mat-form-field-wrapper {
-    padding-bottom: 5px!important;
-   
-}
-::ng-deep.mat-form-field-ripple {
-    background-color: transparent !important;
-}
 
-// ::ng-deep .mat-form-field-label-wrapper {
-//     top: 0;
-//     padding-top: 0px !important;
-// }
-::ng-deep .mat-select-panel::-webkit-scrollbar{
-    width: 2px !important;
-    background:white !important;
-}
-::ng-deep .mat-select-panel::-webkit-scrollbar-thumb{
-    background-color: #6321CE !important;
-    border-radius: 10px !important;
-}
-::ng-deep .mat-form-field-appearance-fill .mat-form-field-flex {
-    border-radius: 4px 4px 0 0;
-    padding: 0em 0.75em 0 0.75em !important;
-}
 .icon{
     z-index: 87578324273864;
     color: white;
@@ -303,18 +293,19 @@ input[type=number] {
     transform: translate(-50%,-50%);
     top: 50%;
     left: 50%;
-    height: auto;
-    width: auto;
-    font-size: 85px;
+    height: 85px;
+    width: 85px;
     cursor: pointer;
 }
 .chart-component{
     // position: absolute;
-    z-index: 9999999;
+    // z-index: 9999999;
     position: absolute;
     /* top: 38%; */
     width: 100%;
     bottom: 0;
+    height: 100%;
+    left: 0;
 }
 ::ng-deep .mat-option-text {
     display: inline-block;
@@ -326,4 +317,144 @@ input[type=number] {
 }
 ::ng-deep .mat-progress-bar-fill::after {
     background-color: green !important;
+}
+
+.form-container{
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    width: 80%;
+}
+
+.logo-area{
+    background: linear-gradient(135deg, #79236B, #1C5BA2) !important;
+    height: 56px !important;
+    box-shadow: 1px 1px 20px rgba(9, 29, 86, 0.62);
+    // width: 100%;
+    padding: 10px 20px;
+}
+
+select {
+   -webkit-appearance:none;
+   -moz-appearance:none;
+   -ms-appearance:none;
+   appearance:none;
+   outline:0;
+   box-shadow:none;
+   background: transparent;
+   background-image: none;
+   flex: 1;
+   padding: 0 .5em;
+   color:black;
+   cursor:pointer;
+   font-size: 1em;
+   font-family: 'Open Sans', sans-serif;
+   border: 2px solid #79236B;
+   border-radius: 8px;
+   margin-left: 5px;
+}
+select::-ms-expand {
+   display: none;
+}
+.select {
+   position: relative;
+   display: flex;
+   width: 20em;
+   height: 3em;
+   line-height: 3;
+   background: transparent;
+   overflow: hidden;
+//    border-radius: .25em;
+   
+}
+.select::after {
+   content: '\25BC';
+   position: absolute;
+   top: 0;
+   right: 0;
+   padding: 0 1em;
+   background: transparent;
+   cursor:pointer;
+   pointer-events:none;
+   transition:.25s all ease;
+   
+}
+.select:hover::after {
+   color: #23b499;
+}
+
+.formGroup{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+@media screen and (max-width: 992px) {
+    .heading{
+        text-align: center;
+    }
+
+    .formGroup{
+        display: flex;
+        flex-direction: column;
+        row-gap: 15px;
+    }
+
+}
+
+.logo{
+    position: absolute;
+    top: 30px;
+    left: 30px;
+    z-index: 999999;
+}
+.download-btn{
+    position: absolute;
+    top: 30px;
+    right: 30px;
+    z-index: 999999;
+}
+
+.download-btn button{
+    border: none;
+    background: transparent;
+}
+
+.download-btn button img{
+    border: none;
+    background: transparent;
+    width: 60%;
+}
+
+// CSS for changing the font family of the mat options text 
+::ng-deep.mat-option-text{
+    font-family: 'Roboto';
+}
+::ng-deep.mat-form-field-flex{
+    width: 20em !important;
+    border: 2px solid #79236B !important;
+    border-radius: 8px !important;
+    margin-left: 5px !important;
+}
+::ng-deep.mat-form-field-appearance-legacy .mat-form-field-underline{
+    display: none !important;
+}
+::ng-deep.mat-form-field-infix{
+    border-top: none !important;
+    padding: 10px !important;
+}
+::ng-deep.mat-form-field-type-mat-select .mat-form-field-label{
+    padding: 4px !important;
+    padding-inline: 10px !important;
+
+}
+::ng-deep.mat-form-field-wrapper{
+    padding-bottom: 0px !important;
+}
+::ng-deep.mat-form-field-appearance-legacy.mat-form-field-can-float.mat-form-field-should-float .mat-form-field-label, .mat-form-field-appearance-legacy.mat-form-field-can-float .mat-input-server:focus+.mat-form-field-label-wrapper .mat-form-field-label{
+    display: none !important;
+}
+::ng-deep.mat-optgroup-label{
+    font-size: 17px !important;
+    font-weight: 500 !important;
 }
