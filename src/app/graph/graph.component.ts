@@ -342,7 +342,9 @@ export class GraphComponent {
       // console.log('Hello from graph componnt');
     });
 
-    // this._api.videoEndEmitter.subscribe((response: any) => {});
+    this._api.videoEndEmitter.subscribe((response: any) => {
+      this.myChart.update()
+    });
   }
 
   // capsFirstLetter(word: string) {
