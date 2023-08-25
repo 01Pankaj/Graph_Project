@@ -91,6 +91,7 @@ export class HomeComponent implements OnInit {
   ngOnInit(): void {
     this.formValidation();
     this.emotionFormValidation();
+    this.startRecording();
   }
 
 
@@ -168,7 +169,19 @@ export class HomeComponent implements OnInit {
   // ************************************************************** Function to play video **********************************************************
 
   play() {
-    this.startRecording();
+    // this.startRecording();
+    this._api.videoStart(true);
+      this.videoLoader = true;
+      setTimeout(() => {
+        // this.startRecording();
+        this.videoLoader = false;
+        this.videoPlay.nativeElement.play();
+        this.Play = true;
+        this.Stop = false;
+        // this.startRecord();
+      }, 1800);
+      this.showControls = false;
+      this.toggleFullScreen();
   }
 
   // ************************************************************** Function to stop video **********************************************************
@@ -229,6 +242,7 @@ export class HomeComponent implements OnInit {
     this.Started = false;
     this.showControls = true;
     this.showDownload = true;
+    this.exitFullscreen();
   }
 
   // ************************************************************** Function hits on progress of video **********************************************************
@@ -319,20 +333,8 @@ export class HomeComponent implements OnInit {
       this.screenRecord = screen;
       let mimeType = 'video/webm';
       // this.enterFullScreen();
-      this.toggleFullScreen();
       this.createRecorder(screen, mimeType)
       // video.srcObject = screen;
-      this._api.videoStart(true);
-      this.videoLoader = true;
-      setTimeout(() => {
-        // this.startRecording();
-        this.videoLoader = false;
-        this.videoPlay.nativeElement.play();
-        this.Play = true;
-        this.Stop = false;
-        // this.startRecord();
-      }, 1800);
-      this.showControls = false;
     }).catch((err: any) => {
       console.log(err);
 
@@ -404,6 +406,17 @@ export class HomeComponent implements OnInit {
       document.exitFullscreen();
     }
   }
+  }
+
+
+  exitFullscreen(){
+      if (document.exitFullscreen) {
+        document.exitFullscreen();
+      } else if (document['webkitExitFullscreen']) { /* Safari */
+        document['webkitExitFullscreen']();
+      } else if (document['msExitFullscreen']) { /* IE11 */
+        document['msExitFullscreen']();
+      }
   }
 
 }
