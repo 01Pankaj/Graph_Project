@@ -104,7 +104,7 @@ export class HomeComponent implements OnInit {
   emotionFormValidation() {
     this.emotion_form = this._fb.group({
       emotion: new FormControl('', Validators.required),
-      cohort: new FormControl('', Validators.required)
+      cohort: new FormControl('')
     })
   }
 
@@ -293,23 +293,46 @@ export class HomeComponent implements OnInit {
 
   // Fucntion to get the emotion of the selected cnt_id and the selected cohorts value 
   getEmotion(cnt_id: any, cohort: any) {
-    this._api.getEmotion(`emotion/get_emotion?minute=${0}&cnt_id=${cnt_id}&${Object.keys(cohort)[0]}=${Object.values(cohort)[0]}`).subscribe((res: any) => {
-      if (res && !res.error && res.response.graph_data) {
-        this.emotionDataAll = res.response.graph_data;
-        this.showSelect = true;
-        this.data = true;
-        this.emotiontSelected = true;
-        this.selectedValue = this.emotion_form.value.emotion.toLowerCase();
-      }
-      else {
-        this._api.obNotify({
-          start: true,
-          code: 200,
-          status: 'error',
-          message: res.message
-        })
-      }
-    })
+    console.log(cohort, "@@@kk");
+    
+    if(Object.keys(cohort).length >= 1){
+      this._api.getEmotion(`emotion/get_emotion?minute=${0}&cnt_id=${cnt_id}&${Object.keys(cohort)[0]}=${Object.values(cohort)[0]}`).subscribe((res: any) => {
+        if (res && !res.error && res.response.graph_data) {
+          this.emotionDataAll = res.response.graph_data;
+          this.showSelect = true;
+          this.data = true;
+          this.emotiontSelected = true;
+          this.selectedValue = this.emotion_form.value.emotion.toLowerCase();
+        }
+        else {
+          this._api.obNotify({
+            start: true,
+            code: 200,
+            status: 'error',
+            message: res.message
+          })
+        }
+      })
+    }else{
+      this._api.getEmotion(`emotion/get_emotion?minute=${0}&cnt_id=${cnt_id}`).subscribe((res: any) => {
+        if (res && !res.error && res.response.graph_data) {
+          this.emotionDataAll = res.response.graph_data;
+          this.showSelect = true;
+          this.data = true;
+          this.emotiontSelected = true;
+          this.selectedValue = this.emotion_form.value.emotion.toLowerCase();
+        }
+        else {
+          this._api.obNotify({
+            start: true,
+            code: 200,
+            status: 'error',
+            message: res.message
+          })
+        }
+      })
+    }
+
 
   }
 
