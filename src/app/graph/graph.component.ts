@@ -1,13 +1,13 @@
 import {
   Component,
   Input,
-  NgZone,
-  Inject,
-  PLATFORM_ID,
-  SimpleChanges,
+  // NgZone,
+  // Inject,
+  // PLATFORM_ID,
+  // SimpleChanges,
 } from '@angular/core';
-import * as am4core from '@amcharts/amcharts4/core';
-import * as am4charts from '@amcharts/amcharts4/charts';
+// import * as am4core from '@amcharts/amcharts4/core';
+// import * as am4charts from '@amcharts/amcharts4/charts';
 import { Chart } from 'chart.js/auto';
 import { ApiService } from '../services/api.service';
 import annotationPlugin from 'chartjs-plugin-annotation';
@@ -64,70 +64,75 @@ export class GraphComponent {
               .data[ctx.index - 1].getProps(['y'], true).y;
     }
     // Data-----
-    const animation = {
-      x: {
-        type: 'number',
-        easing: 'linear',
-        duration: delayBetweenPoints,
-        from: NaN, // the point is initially skipped
-        delay(ctx) {
-          if (ctx.type !== 'data' || ctx.xStarted) {
-            return 0;
-          }
-          ctx.xStarted = true;
-          return ctx.index * delayBetweenPoints;
-        },
-      },
-      y: {
-        type: 'number',
-        easing: 'easeOutQuart',
-        duration: delayBetweenPoints,
-        from: previousY,
-        delay(ctx) {
-          if (ctx.type !== 'data' || ctx.yStarted) {
-            return 0;
-          }
-          ctx.yStarted = true;
-          return ctx.index * delayBetweenPoints;
-        },
-      },
-      tension: {
-        from: 1,
-        to: 0.6,
-      },
-    };
+    // const animation = {
+    //   x: {
+    //     type: 'number',
+    //     easing: 'linear',
+    //     duration: delayBetweenPoints,
+    //     from: NaN, // the point is initially skipped
+    //     delay(ctx) {
+    //       if (ctx.type !== 'data' || ctx.xStarted) {
+    //         return 0;
+    //       }
+    //       ctx.xStarted = true;
+    //       return ctx.index * delayBetweenPoints;
+    //     },
+    //   },
+    //   y: {
+    //     type: 'number',
+    //     easing: 'easeOutQuart',
+    //     duration: delayBetweenPoints,
+    //     from: previousY,
+    //     delay(ctx) {
+    //       if (ctx.type !== 'data' || ctx.yStarted) {
+    //         return 0;
+    //       }
+    //       ctx.yStarted = true;
+    //       return ctx.index * delayBetweenPoints;
+    //     },
+    //   },
+    //   tension: {
+    //     from: 1,
+    //     to: 0.6,
+    //   },
+    // };
 
-    //this function is created for the linear gradient of x axis
-    let width, height, gradient;
-    function getGradient(ctx, chartArea) {
-      const chartWidth = chartArea.right - chartArea.left;
-      const chartHeight = chartArea.bottom - chartArea.top;
-      if (!gradient || width !== chartWidth || height !== chartHeight) {
-        // Create the gradient because this is either the first render
-        // or the size of the chart has changed
-        width = chartWidth;
-        height = chartHeight;
-        gradient = ctx.createLinearGradient(
-          0,
-          chartArea.bottom,
-          0,
-          chartArea.top
-        );
-        gradient.addColorStop(0, 'rgba(255, 255, 255, 0.75)');
-        // gradient.addColorStop(0.75, 'rgba(255, 255, 255, 0.5)');
-        gradient.addColorStop(0.5, 'rgba(255, 255, 255, 0.25)');
-        gradient.addColorStop(1, 'rgba(255, 255, 255, 0)');
-      }
+    // //this function is created for the linear gradient of x axis
+    // let width, height, gradient;
+    // function getGradient(ctx, chartArea) {
+    //   const chartWidth = chartArea.right - chartArea.left;
+    //   const chartHeight = chartArea.bottom - chartArea.top;
+    //   if (!gradient || width !== chartWidth || height !== chartHeight) {
+    //     // Create the gradient because this is either the first render
+    //     // or the size of the chart has changed
+    //     width = chartWidth;
+    //     height = chartHeight;
+    //     gradient = ctx.createLinearGradient(
+    //       0,
+    //       chartArea.bottom,
+    //       0,
+    //       chartArea.top
+    //     );
+    //     gradient.addColorStop(0, 'rgba(255, 255, 255, 0.75)');
+    //     // gradient.addColorStop(0.75, 'rgba(255, 255, 255, 0.5)');
+    //     gradient.addColorStop(0.5, 'rgba(255, 255, 255, 0.25)');
+    //     gradient.addColorStop(1, 'rgba(255, 255, 255, 0)');
+    //   }
 
-      return gradient;
-    }
+    //   return gradient;
+    // }
 
     const config = {
       type: 'line',
+      arrowHeads: {
+        end: {
+          display: true
+        }
+      },
       data: {
         datasets: [
           {
-            borderColor: '#000000',
+            borderColor: '#ffffff',
             // borderColor: '#ffffff',
               // this.selectedValue == 'angry'
               //   ? 'rgb(205,0,0)'
@@ -150,14 +155,14 @@ export class GraphComponent {
               //   : this.selectedValue == 'surprised'
               //   ? 'rgb(255, 255, 0)'
               //   : 'rgba(255,255,255)',
-            borderWidth: 2,
+            borderWidth: 3,
             radius: 0,
             data: data,
             fill: 'origin',
             backgroundColor:  
             (ctx) => {
               const canvas = ctx.chart.ctx;
-              console.log(canvas, 'canvas');
+              // console.log(canvas, 'canvas');
               let gradient = 
               canvas.createLinearGradient(
                 0,
@@ -165,9 +170,9 @@ export class GraphComponent {
                 0,
                 canvas.canvas.height
               );
-              gradient.addColorStop(0, 'rgba(234,217,217,0)');
-              // gradient.addColorStop(0.5, 'rgba(234,217,217,0.5)');
-              gradient.addColorStop(1, 'rgba(217,217,217,1)');
+              gradient.addColorStop(0, 'rgba(193, 193, 193, 0.5)');
+              gradient.addColorStop(0.75, 'rgba(193, 193, 193,0.3)');
+              gradient.addColorStop(1, 'rgba(0, 0, 0, 0.00)');
 
               // if (this.selectedValue == 'angry') {
               //   gradient.addColorStop(0, 'rgba(205,0,0,0.9)');
@@ -206,10 +211,44 @@ export class GraphComponent {
               return gradient;
             },
           },
+         
         ],
       },
       options: {
-        animation,
+        animation: {
+          x: {
+            type: 'number',
+            easing: 'linear',
+            duration: delayBetweenPoints,
+            from: NaN, // the point is initially skipped
+            delay(ctx) {
+              if (ctx.type !== 'data' || ctx.xStarted) {
+                return 0;
+              }
+              ctx.xStarted = true;
+              return ctx.index * delayBetweenPoints;
+            },
+          },
+          y: {
+            type: 'number',
+            easing: 'easeOutQuart',
+            duration: delayBetweenPoints,
+            from: previousY,
+            delay(ctx) {
+              if (ctx.type !== 'data' || ctx.yStarted) {
+                return 0;
+              }
+              ctx.yStarted = true;
+              return ctx.index * delayBetweenPoints;
+            },
+          },
+          tension: {
+            from: 1,
+            to: 0.8,
+          },
+
+          
+        },
         maintainAspectRatio: false,
         interaction: {
           intersect: false,
@@ -246,6 +285,9 @@ export class GraphComponent {
               },
             },
           },
+          // title: {
+          //   display:true,
+          // }
         },
         scales: {
           x: {
@@ -265,7 +307,7 @@ export class GraphComponent {
               lineWidth: 1,
             },
             ticks: {
-              stepSize: data.length < 30 ? 2 : 5,
+              stepSize: data.length < 180 ? 1 : 2,
               beginAtZero: true,
               display: false,
               color: "#ffffff"
@@ -275,11 +317,14 @@ export class GraphComponent {
             },
           },
           y: {
+              // min: 0,
+              //   max: 1,
             grid: {
               display: false,
             },
             ticks: {
-              display: false
+              display: false,
+              // stepSize: 0.8  
             },
           },
         },
@@ -297,11 +342,11 @@ export class GraphComponent {
       // console.log('Hello from graph componnt');
     });
 
-    this._api.videoEndEmitter.subscribe((response: any) => {});
+    // this._api.videoEndEmitter.subscribe((response: any) => {});
   }
 
-  capsFirstLetter(word: string) {
-    let capitalized = '';
-    return (capitalized = word.charAt(0).toUpperCase() + word.slice(1));
-  }
+  // capsFirstLetter(word: string) {
+  //   let capitalized = '';
+  //   return (capitalized = word.charAt(0).toUpperCase() + word.slice(1));
+  // }
 }

@@ -1,4 +1,8 @@
+#myChart .chartjs-y-axis {
+    display: none !important;
+  }
 #myChart{
-    // min-width: 100vw !important;
-    // width: 100% !important;
-}
+    .chartjs-y-axis-container {
+        height: 20% !important; /* Adjust the height as needed */
+      }
+} 
