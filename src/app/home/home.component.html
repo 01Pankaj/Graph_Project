@@ -1,4 +1,4 @@
-<div class="parent">
+<div class="parent" id="container">
     <div class="logo-area" *ngIf="!emotiontSelected">
         <img src="https://corporate.monetanalytics.com/assets/logofull.svg" alt="">
     </div>
@@ -79,10 +79,11 @@
                     <div class="logo">
                         <img src="assets/images/monetlogo.svg" alt="monetlogo">
                     </div>
-                    <div class="download-btn">
-                        <button>
+                    <div class="download-btn" *ngIf="showDownload">
+                        <a [href]="videoLink" [download]="videoLink">
                             <img src="assets/images/download-btn.svg" alt="download-btn">
-                        </button>
+                            <!-- Download video -->
+                        </a>
                     </div>
                 </div>
             </div>
