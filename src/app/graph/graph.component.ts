@@ -34,7 +34,7 @@ export class GraphComponent {
   ngOnInit() {
     Chart.register(annotationPlugin);
 
-    console.log(this.selectedValue, 'from graph');
+    // console.log(this.selectedValue, 'from graph',this.emotionDataAll);
 
     const data = [];
     // const data2 = [];

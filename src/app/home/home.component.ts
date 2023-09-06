@@ -40,7 +40,7 @@ export class HomeComponent implements OnInit {
   selectedValue: any;
   @ViewChild('video') video: ElementRef;
   @ViewChild('videoPlay') videoPlay: ElementRef;
-  emotions = ["Angry", "Arousal", "Attention", "Disgust", "Evalence", "Happy", "Neutral", "Sad", "Scare", "Surprised"];
+  emotions = ["Angry", "Arousal", "Attention", "Disgust", "Evalence", "Happy", "Neutral", "Sad", "Scare", "Surprised",'accurate','boring','confusing','dislike','engaging','like','love','memorable','valence'];
   cohort: any = {};
   mediaRecorder: any;
   images: any = [];
@@ -116,7 +116,9 @@ export class HomeComponent implements OnInit {
     this.submitted = true;
     this._api.getReaction(`reaction/get_reaction?minute=${0}&cnt_id=${this.cnt_id}`).subscribe((data: any) => {
       if (data && !data.error) {
-        this.reactionData = data.response;
+        this.reactionData = data.response.graph_data;
+        // console.log(this.reactionData);
+        
       }
       else {
         this._api.obNotify({
@@ -211,7 +213,7 @@ export class HomeComponent implements OnInit {
       }
       // console.log("New Data", this.emotionData,this.emotionDataAll,this.videoCurrentTime);
     }, 1000)
-    console.log("Started", e);
+    // console.log("Started", e);
     this.interval = setInterval(() => {
       this.Duration = Math.ceil((this.videoPlay.nativeElement.currentTime / this.videoPlay.nativeElement.duration) * 100);
     }, 5)
@@ -233,7 +235,7 @@ export class HomeComponent implements OnInit {
     this._api.videoEnd(true)
     // this.stopRecord();
     this.stopRecording();
-    console.log("Ended", e);
+    // console.log("Ended", e);
     this.Play = false;
     this.Stop = true;
     clearInterval(this.interval);
@@ -252,14 +254,14 @@ export class HomeComponent implements OnInit {
 
   // ************************************************************** Function hits when video buffers **********************************************************
   waiting() {
-    console.log(this.video, "waiting");
+    // console.log(this.video, "waiting");
     // this.video.nativeElement.pause();
     this.Waiting = true;
   }
 
   // ************************************************************** Function hits when video start again after buffering **********************************************************
   playing() {
-    console.log(this.video, "playing");
+    // console.log(this.video, "playing");
     this.Waiting = false;
   }
 
@@ -286,7 +288,7 @@ export class HomeComponent implements OnInit {
 
   // Fucntion to concatenate the cohorts with the fixed ones 
   selectCohort(index: any, value: any) {
-    console.log("Inside selectCohort function ");
+    // console.log("Inside selectCohort function ");
     
     this.cohort = {};
     index === 0 ? this.cohort['emoting'] = value : index === 1 ? this.cohort['age-range'] = value : index === 2 ? this.cohort['gender'] = value : this.cohort['slag'] = value;
@@ -295,7 +297,7 @@ export class HomeComponent implements OnInit {
 
   // Fucntion to get the emotion of the selected cnt_id and the selected cohorts value 
   getEmotion(cnt_id: any, cohort: any) {
-    console.log("Inside getemotion function",cohort);
+    // console.log("Inside getemotion function",cohort);
     if(Object.keys(cohort).length>0){
     this._api.getEmotion(`emotion/get_emotion?minute=${0}&cnt_id=${cnt_id}&${Object.keys(cohort)[0]}=${Object.values(cohort)[0]}`).subscribe((res: any) => {
       if (res && !res.error && res.response.graph_data) {
@@ -304,6 +306,20 @@ export class HomeComponent implements OnInit {
         this.data = true;
         this.emotiontSelected = true;
         this.selectedValue = this.emotion_form.value.emotion.toLowerCase();
+        if(this.reactionData){
+          let keys = Object.keys(this.reactionData[0]);
+          // console.log(keys);
+          
+          for(let i=0;i<this.emotionDataAll.length;i++){
+            for(let j=0;j<keys.length;j++){
+              // console.log(this.emotionDataAll[i][keys[j]],this.reactionData[i][keys[j]]);
+              
+              this.emotionDataAll[i][keys[j]] = this.reactionData[i][keys[j]];
+            }
+          }
+          // console.log(this.emotionDataAll);
+          
+        }
       }
       else {
         this._api.obNotify({
@@ -352,7 +368,7 @@ export class HomeComponent implements OnInit {
         },
       }
     ).then((screen: any) => {
-      console.log(screen);
+      // console.log(screen);
       var video = document.getElementById('recordedVideo') as HTMLVideoElement;
       this.screenRecord = screen;
       let mimeType = 'video/webm';
@@ -393,8 +409,8 @@ export class HomeComponent implements OnInit {
     //  let filename = window.prompt('Enter file name'),
     //  downloadLink = document.createElement('a');
     //  downloadLink.href = URL.createObjectURL(blob);
-    console.log(URL.createObjectURL(blob));
-    console.log(this.sanitizer.bypassSecurityTrustResourceUrl(URL.createObjectURL(blob)));
+    // console.log(URL.createObjectURL(blob));
+    // console.log(this.sanitizer.bypassSecurityTrustResourceUrl(URL.createObjectURL(blob)));
     this.videoLink = this.sanitizer.bypassSecurityTrustResourceUrl(URL.createObjectURL(blob));
     //  downloadLink.download = `＄{filename}.webm`;
 
@@ -406,20 +422,20 @@ export class HomeComponent implements OnInit {
   stopRecording() {
     this.mediaRecorder.stop();
     this.screenRecord.getTracks().forEach((track: any) => {
-      console.log("Stopping screen recording", track, this.screenRecord);
+      // console.log("Stopping screen recording", track, this.screenRecord);
 
       track.stop();
     })
   }
 
   toggleFullScreen(){
-    console.log("Inside toggleFullscreen function");
+    // console.log("Inside toggleFullscreen function");
     
     let elem = document.getElementById('container');
 
   elem.requestFullscreen = elem.requestFullscreen || elem['mozRequestFullscreen']()
           || elem['msRequestFullscreen']() || elem['webkitRequestFullscreen']()
-    console.log(elem,document,document.fullscreenElement);
+    // console.log(elem,document,document.fullscreenElement);
     
   if (!document.fullscreenElement) {
     elem.requestFullscreen().then().catch(err => {
