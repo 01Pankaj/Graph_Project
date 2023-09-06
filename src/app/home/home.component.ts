@@ -302,7 +302,9 @@ export class HomeComponent implements OnInit {
           this.showSelect = true;
           this.data = true;
           this.emotiontSelected = true;
-          this.selectedValue = this.emotion_form.value.emotion.toLowerCase();
+          this.selectedValue = this.emotion_form.value.emotion
+          console.log(this.selectedValue);
+          
         }
         else {
           this._api.obNotify({
@@ -320,7 +322,8 @@ export class HomeComponent implements OnInit {
           this.showSelect = true;
           this.data = true;
           this.emotiontSelected = true;
-          this.selectedValue = this.emotion_form.value.emotion.toLowerCase();
+          this.selectedValue = this.emotion_form.value.emotion
+          console.log(this.selectedValue);
         }
         else {
           this._api.obNotify({
@@ -440,6 +443,7 @@ export class HomeComponent implements OnInit {
       } else if (document['msExitFullscreen']) { /* IE11 */
         document['msExitFullscreen']();
       }
+      this._api.exitFullscreen(true);
   }
 
 }

@@ -25,7 +25,7 @@
                         <label for="cnt_id">Select Emotion : </label>
                         <mat-form-field>
                             <mat-label>--Emotion--</mat-label>
-                            <mat-select formControlName="emotion">
+                            <mat-select formControlName="emotion" multiple>
                                 <mat-option *ngFor="let emotion of emotions" [value]="emotion">
                                   {{emotion}}
                                 </mat-option>

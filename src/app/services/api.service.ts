@@ -53,4 +53,8 @@ export class ApiService {
   videoEnd(data:any){
     this.videoEndEmitter.emit(true)
   }
+  @Output() exitFullscreenEvent = new EventEmitter();
+  exitFullscreen(data: any){
+    this.exitFullscreenEvent.emit(true);
+  }
 }
