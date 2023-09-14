@@ -1,6 +1,8 @@
 import {
   Component,
+  EventEmitter,
   Input,
+  Output,
   // NgZone,
   // Inject,
   // PLATFORM_ID,
@@ -23,6 +25,7 @@ export class GraphComponent {
   id: any;
   myChart: any;
   canvas: any;
+  @Output() graphBase64 = new EventEmitter();
   @Input() emotionData: any;
   @Input() videoDuration: any;
   @Input() emotionDataAll: any;
@@ -34,7 +37,7 @@ export class GraphComponent {
   ngOnInit() {
     Chart.register(annotationPlugin);
 
-    console.log(this.selectedValue, 'from graph');
+    // console.log(this.selectedValue, 'from graph', this.emotionDataAll);
 
     const data = [];
     // const data2 = [];
@@ -252,6 +255,13 @@ export class GraphComponent {
         from: 1,
         to: 0.6,
       },
+      onComplete: (context) =>{
+ 
+          const graphBase64 = context.chart.toBase64Image()
+          // console.log(graphBase64);
+          this.graphBase64.emit(graphBase64);
+        // this.myChart.update();
+      },
         },
         maintainAspectRatio: false,
         interaction: {
@@ -336,6 +346,10 @@ export class GraphComponent {
       } else {
         this.myChart = new Chart(this.canvas, config);
       }
+      setTimeout(() => {
+        
+        this.myChart.update();
+      }, 1000);
       // console.log('Hello from graph componnt');
     });
 

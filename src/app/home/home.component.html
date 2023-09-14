@@ -73,7 +73,7 @@
     
                     <app-graph class="chart-component" *ngIf="selectedValue" [emotionData]="emotionData"
                         [videoDuration]="videoDuration" [emotionDataAll]="emotionDataAll" [currentTime]="videoCurrentTime"
-                        [selectedValue]="selectedValue"></app-graph>
+                        [selectedValue]="selectedValue" (graphBase64)="graphBase64($event)"></app-graph>
                     <!-- <mat-progress-bar [value]="Duration" mode="determinate"></mat-progress-bar> -->
                     <!-- <mat-icon class="icon" (click)="play()" *ngIf="!Play">play_arrow</mat-icon> -->
                     <div class="logo">
@@ -83,6 +83,12 @@
                         <a [href]="videoLink" [download]="'graph video'">
                             <img src="assets/images/download-btn.svg" alt="download-btn">
                             <!-- Download video -->
+                            <p>Download Video</p>
+                        </a>
+                        <a [download]="'graph image'" [href]="graphImage" id="graphImage" (click)="downloadGraphImage($event)" style="margin-left: 10px;">
+                            <img  src="assets/images/download-btn.svg" alt="download-btn">
+                            <!-- Download video -->
+                            <p>Download Graph</p>
                         </a>
                     </div>
                 </div>

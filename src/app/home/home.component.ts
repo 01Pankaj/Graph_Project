@@ -40,13 +40,14 @@ export class HomeComponent implements OnInit {
   selectedValue: any;
   @ViewChild('video') video: ElementRef;
   @ViewChild('videoPlay') videoPlay: ElementRef;
-  emotions = ["Angry", "Arousal", "Attention", "Disgust", "Evalence", "Happy", "Neutral", "Sad", "Scare", "Surprised"];
+  emotions = ["Angry", "Arousal", "Attention", "Disgust", "Evalence", "Happy", "Neutral", "Sad", "Scare", "Surprised",'Accurate','Boring','Confusing','Dislike','Engaging','Like','Love','Memorable','Valence'];
   cohort: any = {};
   mediaRecorder: any;
   images: any = [];
   recordedVideo: boolean = false;
   showDownload: boolean = false;
   screenRecord: any;
+  graphImage:any;
   videoLink:any;
   cohorts: any = [
     {
@@ -116,7 +117,7 @@ export class HomeComponent implements OnInit {
     this.submitted = true;
     this._api.getReaction(`reaction/get_reaction?minute=${0}&cnt_id=${this.cnt_id}`).subscribe((data: any) => {
       if (data && !data.error) {
-        this.reactionData = data.response;
+        this.reactionData = data.response.graph_data;
       }
       else {
         this._api.obNotify({
@@ -242,7 +243,7 @@ export class HomeComponent implements OnInit {
     this.Started = false;
     this.showControls = true;
     this.showDownload = true;
-    this.exitFullscreen();
+    // this.exitFullscreen();
   }
 
   // ************************************************************** Function hits on progress of video **********************************************************
@@ -292,51 +293,66 @@ export class HomeComponent implements OnInit {
 
 
   // Fucntion to get the emotion of the selected cnt_id and the selected cohorts value 
-  getEmotion(cnt_id: any, cohort: any) {
-    console.log(cohort, "@@@kk");
-    
-    if(Object.keys(cohort).length >= 1){
-      this._api.getEmotion(`emotion/get_emotion?minute=${0}&cnt_id=${cnt_id}&${Object.keys(cohort)[0]}=${Object.values(cohort)[0]}`).subscribe((res: any) => {
-        if (res && !res.error && res.response.graph_data) {
-          this.emotionDataAll = res.response.graph_data;
-          this.showSelect = true;
-          this.data = true;
-          this.emotiontSelected = true;
-          this.selectedValue = this.emotion_form.value.emotion.toLowerCase();
-        }
-        else {
-          this._api.obNotify({
-            start: true,
-            code: 200,
-            status: 'error',
-            message: res.message
-          })
-        }
-      })
-    }else{
-      this._api.getEmotion(`emotion/get_emotion?minute=${0}&cnt_id=${cnt_id}`).subscribe((res: any) => {
-        if (res && !res.error && res.response.graph_data) {
-          this.emotionDataAll = res.response.graph_data;
-          this.showSelect = true;
-          this.data = true;
-          this.emotiontSelected = true;
-          this.selectedValue = this.emotion_form.value.emotion.toLowerCase();
-        }
-        else {
-          this._api.obNotify({
-            start: true,
-            code: 200,
-            status: 'error',
-            message: res.message
-          })
-        }
+// Fucntion to get the emotion of the selected cnt_id and the selected cohorts value 
+getEmotion(cnt_id: any, cohort: any) {
+  // console.log("Inside getemotion function",cohort);
+  if(Object.keys(cohort).length>0){
+  this._api.getEmotion(`emotion/get_emotion?minute=${0}&cnt_id=${cnt_id}&${Object.keys(cohort)[0]}=${Object.values(cohort)[0]}`).subscribe((res: any) => {
+    if (res && !res.error && res.response.graph_data) {
+      this.emotionDataAll = res.response.graph_data;
+      this.showSelect = true;
+      this.data = true;
+      this.emotiontSelected = true;
+      this.selectedValue = this.emotion_form.value.emotion.toLowerCase();
+      if(this.reactionData){
+        // let keys = Object.keys(this.reactionData[0]);
+        // console.log(keys);
+        
+        // for(let i=0;i<this.emotionDataAll.length;i++){
+        //   for(let j=0;j<keys.length;j++){
+        //     this.emotionDataAll[i][keys[j]] = this.reactionData[i][keys[j]];
+        //   }
+        // }
+      this.emotionDataAll =  (this.emotionDataAll).map((item:any,index:any)=>{
+          return {...item,...(this.reactionData[index]?this.reactionData[index]:{})}
+        })
+      }
+    }
+    else {
+      this._api.obNotify({
+        start: true,
+        code: 200,
+        status: 'error',
+        message: res.message
       })
     }
-
-
-  }
-
-
+  })
+}
+else{
+  this._api.getEmotion(`emotion/get_emotion?minute=${0}&cnt_id=${cnt_id}`).subscribe((res: any) => {
+    if (res && !res.error && res.response.graph_data) {
+      this.emotionDataAll = res.response.graph_data;
+      this.showSelect = true;
+      this.data = true;
+      this.emotiontSelected = true;
+      this.selectedValue = this.emotion_form.value.emotion.toLowerCase();
+      if(this.reactionData){
+        this.emotionDataAll =  (this.emotionDataAll).map((item:any,index:any)=>{
+          return {...item,...(this.reactionData[index]?this.reactionData[index]:{})}
+        })
+      }
+    }
+    else {
+      this._api.obNotify({
+        start: true,
+        code: 200,
+        status: 'error',
+        message: res.message
+      })
+    }
+  })
+}
+}
 
   startRecording() {
     this.recordedVideo = true;
@@ -426,9 +442,11 @@ export class HomeComponent implements OnInit {
     });
   } else {
     if (document.exitFullscreen) {
-      document.exitFullscreen();
+      // document.exitFullscreen();
     }
   }
+
+  this._api.toggleScreen(true);
   }
 
 
@@ -440,6 +458,18 @@ export class HomeComponent implements OnInit {
       } else if (document['msExitFullscreen']) { /* IE11 */
         document['msExitFullscreen']();
       }
+  this._api.toggleScreen(true);
+
   }
 
+  downloadGraphImage(event: any){
+    console.log(event);
+    let a = document.getElementById(event.target.id);
+    console.log(a);
+    
+  }
+  graphBase64(e:any){
+    console.log("Hello from home ",e);
+    this.graphImage = e;
+  }
 }

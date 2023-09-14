@@ -53,4 +53,9 @@ export class ApiService {
   videoEnd(data:any){
     this.videoEndEmitter.emit(true)
   }
+
+  @Output() toggleScreenEvent = new EventEmitter();
+  toggleScreen(data: any){
+    this.toggleScreenEvent.emit(true);
+  }
 }
