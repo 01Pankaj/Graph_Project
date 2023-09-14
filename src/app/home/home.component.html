@@ -34,17 +34,23 @@
                     </div>
                     <div class="formGroup">
                         <label for="cnt_id">Select Cohort : </label>
-                            <mat-form-field>
-                                <mat-label>--Cohort--</mat-label>
-                                <mat-select formControlName="cohort">
-                                  <mat-optgroup *ngFor="let values of cohorts;let i=index" [label]="values.name"
-                                                [disabled]="values.disabled">
-                                    <mat-option *ngFor="let options of values.values" [value]="options.value" [id]="i.toString()" (click)="selectCohort(i,options.value)">
-                                      {{options.name}}
-                                    </mat-option>
-                                  </mat-optgroup>
-                                </mat-select>
-                              </mat-form-field>
+                        <mat-form-field>
+                            <mat-label>--Cohort--</mat-label>
+                            <mat-select formControlName="cohort">
+                                <mat-optgroup *ngFor="let values of cohorts;let i=index" [label]="values.name"
+                                [disabled]="values.disabled">
+                                <mat-option *ngFor="let options of values.values" [value]="options.value" [id]="i.toString()" (click)="selectCohort(i,options.value)">
+                                    {{options.name}}
+                                </mat-option>
+                            </mat-optgroup>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                <div class="formGroup">
+                        <label for="cnt_id">Select Time range : </label>
+                        <!-- <mat-form-field style="width: 100px" floatLabel="never" class="formInputColor"> -->
+                            <input matInput formControlName="time_range" placeholder="e.g. 00:00-00:00" autocomplete="off" style="color: #969090 !important"/>
+                          <!-- </mat-form-field> -->
                     </div>
                 </div>
                     <div class="submitButton">
@@ -71,8 +77,7 @@
                     <img class="icon" (click)="play()" *ngIf="!Play && showControls" src="assets/images/play-btn.svg">
                     <mat-icon class="icon" (click)="stop()" *ngIf="!Stop && showControls">pause</mat-icon>
     
-                    <app-graph class="chart-component" *ngIf="selectedValue" [emotionData]="emotionData"
-                        [videoDuration]="videoDuration" [emotionDataAll]="emotionDataAll" [currentTime]="videoCurrentTime"
+                    <app-graph class="chart-component" *ngIf="selectedValue" [emotionDataAll]="emotionDataAll" [currentTime]="videoCurrentTime"
                         [selectedValue]="selectedValue"></app-graph>
                     <!-- <mat-progress-bar [value]="Duration" mode="determinate"></mat-progress-bar> -->
                     <!-- <mat-icon class="icon" (click)="play()" *ngIf="!Play">play_arrow</mat-icon> -->

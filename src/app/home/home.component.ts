@@ -48,6 +48,9 @@ export class HomeComponent implements OnInit {
   showDownload: boolean = false;
   screenRecord: any;
   videoLink:any;
+  start:any;
+  end:any;
+  customTime:boolean = false;
   cohorts: any = [
     {
       name: 'Emotion Intensity',
@@ -104,7 +107,8 @@ export class HomeComponent implements OnInit {
   emotionFormValidation() {
     this.emotion_form = this._fb.group({
       emotion: new FormControl('', Validators.required),
-      cohort: new FormControl('')
+      cohort: new FormControl(''),
+      time_range:new FormControl('')
     })
   }
 
@@ -148,7 +152,7 @@ export class HomeComponent implements OnInit {
 
   // Function hits when user selects the emotion and cohort for a cnt_id to plot the graph data 
   submitEmotion() {
-    this.getEmotion(this.cnt_id, this.cohort)
+    this.getEmotion(this.cnt_id, this.cohort,this.emotion_form.value.time_range)
     // this.emotiontSelected = true;
     // this.selectedValue = this.emotion_form.value.emotion.toLowerCase();
 
@@ -177,6 +181,9 @@ export class HomeComponent implements OnInit {
       setTimeout(() => {
         // this.startRecording();
         this.videoLoader = false;
+        if(this.customTime){
+          this.videoPlay.nativeElement.currentTime = this.start;
+        }
         this.videoPlay.nativeElement.play();
         this.Play = true;
         this.Stop = false;
@@ -250,6 +257,10 @@ export class HomeComponent implements OnInit {
   // ************************************************************** Function hits on progress of video **********************************************************
   ontimeUpdate(e) {
     this.videoCurrentTime = Math.ceil(e.target.currentTime);
+    if(this.customTime && e.target.currentTime>= this.end){
+      this.stop()
+      this.Ended('Dummy event');
+    }
   }
 
   // ************************************************************** Function hits when video buffers **********************************************************
@@ -296,8 +307,15 @@ export class HomeComponent implements OnInit {
 
 
   // Fucntion to get the emotion of the selected cnt_id and the selected cohorts value 
-  getEmotion(cnt_id: any, cohort: any) {
-    // console.log("Inside getemotion function",cohort);
+  getEmotion(cnt_id: any, cohort: any,time_range:any) {
+    console.log("Inside getemotion function");
+    if(time_range){
+      let time = time_range.split('-')
+      this.start = this._api.minutesToSecond(time[0]);
+      this.end = this._api.minutesToSecond(time[1]);
+    }
+    console.log("checking time range",this.start,this.end);
+    
     if(Object.keys(cohort).length>0){
     this._api.getEmotion(`emotion/get_emotion?minute=${0}&cnt_id=${cnt_id}&${Object.keys(cohort)[0]}=${Object.values(cohort)[0]}`).subscribe((res: any) => {
       if (res && !res.error && res.response.graph_data) {
@@ -307,18 +325,15 @@ export class HomeComponent implements OnInit {
         this.emotiontSelected = true;
         this.selectedValue = this.emotion_form.value.emotion.toLowerCase();
         if(this.reactionData){
-          let keys = Object.keys(this.reactionData[0]);
-          // console.log(keys);
-          
-          for(let i=0;i<this.emotionDataAll.length;i++){
-            for(let j=0;j<keys.length;j++){
-              // console.log(this.emotionDataAll[i][keys[j]],this.reactionData[i][keys[j]]);
-              
-              this.emotionDataAll[i][keys[j]] = this.reactionData[i][keys[j]];
-            }
+        this.emotionDataAll =  (this.emotionDataAll).map((item:any,index:any)=>{
+            return {...item,...(this.reactionData[index]?this.reactionData[index]:{})}
+          })
+          if(this.start && this.end && this.start>=0 && this.end>this.start && this.start<this.emotionDataAll.length && this.end<=this.emotionDataAll.length){
+            this.customTime = true;
+            this.emotionDataAll = this.emotionDataAll.filter((item:any)=>{
+              return item.time>= this.start && item.time<=this.end
+            })
           }
-          // console.log(this.emotionDataAll);
-          
         }
       }
       else {
@@ -339,6 +354,17 @@ export class HomeComponent implements OnInit {
         this.data = true;
         this.emotiontSelected = true;
         this.selectedValue = this.emotion_form.value.emotion.toLowerCase();
+        if(this.reactionData){
+          this.emotionDataAll =  (this.emotionDataAll).map((item:any,index:any)=>{
+            return {...item,...(this.reactionData[index]?this.reactionData[index]:{})}
+          })
+        }
+        if(this.start && this.end && this.start>=0 && this.end>this.start && this.start<this.emotionDataAll.length && this.end<=this.emotionDataAll.length){
+          this.customTime = true;
+          this.emotionDataAll = this.emotionDataAll.filter((item:any)=>{
+            return item.time>= this.start && item.time<=this.end
+          })
+        }
       }
       else {
         this._api.obNotify({

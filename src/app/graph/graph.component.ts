@@ -23,8 +23,6 @@ export class GraphComponent {
   id: any;
   myChart: any;
   canvas: any;
-  @Input() emotionData: any;
-  @Input() videoDuration: any;
   @Input() emotionDataAll: any;
   @Input() currentTime: any;
   @Input() selectedValue: any;
@@ -34,7 +32,7 @@ export class GraphComponent {
   ngOnInit() {
     Chart.register(annotationPlugin);
 
-    // console.log(this.selectedValue, 'from graph',this.emotionDataAll);
+    console.log(this.selectedValue, 'from graph',this.emotionDataAll);
 
     const data = [];
     // const data2 = [];

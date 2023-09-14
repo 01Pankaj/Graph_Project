@@ -53,4 +53,30 @@ export class ApiService {
   videoEnd(data:any){
     this.videoEndEmitter.emit(true)
   }
+
+
+  secondToMin(s) {
+    const value = Number(s);
+    if (value > 3600) {
+      const hours   = Math.floor(value / 3600);
+      const minutes = Math.floor((value - (hours * 3600)) / 60);
+      const seconds = value - (hours * 3600) - (minutes * 60);
+      return Math.floor(hours) < 10 ? '0' + Math.floor(hours) + '' + (Math.floor(minutes) < 10 ? '0' + Math.floor(minutes) + ':' + ( seconds < 10 ? '0' + seconds : seconds) + '' : Math.floor(minutes) + ':' + ( seconds < 10 ? '0' + seconds : seconds) + '') : Math.floor(hours) + '' + (Math.floor(minutes) < 10 ? '0' + Math.floor(minutes) + ':' + ( seconds < 10 ? '0' + seconds : seconds) + '' : Math.floor(minutes) + ':' + ( seconds < 10 ? '0' + seconds : seconds) + '');
+    } else {
+      const minutes: number = Math.floor(value / 60);
+      return Math.floor(minutes) < 10 ? '0' + Math.floor(minutes) + ':' + ( Math.floor(value - minutes * 60) < 10 ? '0' + Math.floor(value - minutes * 60) + '' : Math.floor(value - minutes * 60)) : Math.floor(minutes) + ':' + ( Math.floor(value - minutes * 60) < 10 ? '0' + Math.floor(value - minutes * 60)  + '' : Math.floor(value - minutes * 60) + '') + '';
+    }
+  }
+  minutesToSecond(data) {
+    let sec = 0;
+    const ar = data.split(':');
+    let se = 1;
+    for (let i = ar.length ; i > 0 ; i--) {
+      if (ar[i - 1]) {
+        sec += +ar[i - 1] * se;
+        se *= 60;
+      }
+    }
+    return sec;
+  }
 }
